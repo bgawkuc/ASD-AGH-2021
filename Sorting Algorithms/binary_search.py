@@ -1,5 +1,5 @@
 #wyszukiwanie binarne
-#w posortowanej tablicy rosnąco sprawdza czy znajduje sie element o wartości x
+#w liście posortowanej rosnąco sprawdza czy znajduje sie element o wartości x
 #złożoność: O(logn)
 
 def binarySearch(A,l,r,x):
