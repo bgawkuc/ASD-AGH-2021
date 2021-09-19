@@ -14,7 +14,8 @@ def bucketSort(A):
     
     for i in range(n):
         d = (A[i] - mini) / r - int((A[i] - mini) / r)
-
+        
+        #ustalam indeks kubełka, do którego trafi i-ty element listy
         if d == 0 and A[i] != mini:
             bucketIdx = int((A[i] - mini) / r) - 1
         else:
