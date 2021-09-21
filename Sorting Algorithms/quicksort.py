@@ -1,4 +1,3 @@
-#quicksort
 #zlożoność: O(nlogn)
 
 #jako pivot przyjmuje element mający indeks r
