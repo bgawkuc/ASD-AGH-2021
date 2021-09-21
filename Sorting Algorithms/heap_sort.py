@@ -2,8 +2,8 @@
 #złożonośc: O(nlogn)
 
 def heapifyMax(A,i,n): 
-    l = 2 * i + 1 
-    r = 2 * i + 2 
+    l = 2*i+1 
+    r = 2*i+2 
     maxi = i 
 
     #szukam najwiekszej wartosci dla indeksow l,r,maxi(rodzic)
