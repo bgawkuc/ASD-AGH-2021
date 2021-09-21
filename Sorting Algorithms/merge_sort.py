@@ -1,7 +1,6 @@
 #sortowanie przez scalanie
 #złożoność: O(nlogn)
 
-
 def mergeSort(A):
     if len(A) > 1:
         #indeks środka listy
