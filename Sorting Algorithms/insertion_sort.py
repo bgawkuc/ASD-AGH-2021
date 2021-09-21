@@ -1,7 +1,6 @@
 #sortowanie przez wstawianie
 #złożoność: O(n^2)
 
-
 def insertionSort(A):
     for i in range(1,len(A)):
         el = A[i]
