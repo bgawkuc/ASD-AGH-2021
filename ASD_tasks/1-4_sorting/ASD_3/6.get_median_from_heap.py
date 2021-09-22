@@ -1,16 +1,9 @@
-#zanelezienie mediany w tablicy za pomoca 2 kopcow min i max heap
-#zloznosc o(logn)
+# Proszę przedstawić W jaki sposób zrealizować strukturę danych, która pozwala wykonywać
+# operacje: 2. RemoveMedian (wyciągnięcie mediany).
 
-#tworze 2 kopca: minHeap i maxHeap
-#przechodze liniowo po tablicy
-#dodaje el do minHeap O(logn)
-#jesli rozmiar min heap jest wiekszy od rozmiaru maxHeap o 2
-#to usuwam najmniejszy element z minHeap(O(n)) i dodaje go do maxHeap(O(n))
-#na sam koniec:
-#jesli rozmiary kopcow sa rowne to mediany są dwie: minimum z minHeap i maksimum z Maxheap
-#a jesli rozmiar minHeap jest wiekszy to medianą jest jego minimum
-#algorytm ma zlozonosc O(nlogn) -> przejscie po tablicy i tworzenie kopców
-
+#Tworzę 2 kopce: min i max. Dodaje elementy z listy do min. Jeśli rozmiar min będzie o 2 większy od max to
+#usuwam najmniejszy element z min i dodaje go do max. 
+#Wynikiem będzie najmniejszy element w kopcu min (lub najmniejszy w kopcu min i największy w kopcu max).
 
 def heapifyMin(A, i, n):
     l = 2 * i + 1
@@ -26,8 +19,6 @@ def heapifyMin(A, i, n):
         A[mini], A[i] = A[i], A[mini]
         heapifyMin(A, mini, n)
 
-
-#usuwa minimum z minHeap
 def deleteMin(A):
     A[0] ,A[-1] = A[-1], A[0]
     mini = A[-1]
@@ -35,26 +26,20 @@ def deleteMin(A):
     heapifyMin(A,0,len(A))
     return mini, A
 
-
 def parent(i):
     return (i-1) // 2
 
-
-#dodaje el do minHeap
 def addToMinHeap(A,el):
     A.append(el)
     l = len(A) - 1
-    #dopoki rodzic jest wiekszy od dziecka
     while parent(l) >= 0 and A[l] < A[parent(l)]:
         A[parent(l)], A[l] = A[l], A[parent(l)]
         l = parent(l)
 
 
-#dodaje el do maxHeap
 def addToMaxHeap(A,el):
     A.append(el)
     l = len(A) - 1
-    #dopoki rodzic jest mniejszy od dziecka
     while parent(l) >= 0 and A[l] > A[parent(l)]:
         A[parent(l)], A[l] = A[l], A[parent(l)]
         l = parent(l)
@@ -64,7 +49,8 @@ def getMedian(A):
     minHeap, maxHeap = [], []
 
     for i in range(len(A)):
-        addToMinHeap(minHeap, A[i]) #dodaje element do kopca min
+        #dodaje element do kopca min
+        addToMinHeap(minHeap, A[i]) 
 
         #gdyby wielksoc kopca min była o 2 wieksza od kopca max to najmniejszy el z min przenosze do max
         if len(minHeap) - len(maxHeap) >= 2:
@@ -77,11 +63,3 @@ def getMedian(A):
 
     elif len(minHeap) > len(maxHeap):
         return minHeap[0]
-
-    else:
-        return maxHeap[0]
-
-A = [0,5,9,1,3,6,7]
-
-print(getMedian(A))
-
