@@ -36,14 +36,12 @@ def addToMinHeap(A,el):
         A[parent(l)], A[l] = A[l], A[parent(l)]
         l = parent(l)
 
-
 def addToMaxHeap(A,el):
     A.append(el)
     l = len(A) - 1
     while parent(l) >= 0 and A[l] > A[parent(l)]:
         A[parent(l)], A[l] = A[l], A[parent(l)]
         l = parent(l)
-
 
 def getMedian(A):
     minHeap, maxHeap = [], []
@@ -61,5 +59,5 @@ def getMedian(A):
     if len(minHeap) == len(maxHeap):
         return maxHeap[0], minHeap[0]
 
-    elif len(minHeap) > len(maxHeap):
+    else:
         return minHeap[0]
