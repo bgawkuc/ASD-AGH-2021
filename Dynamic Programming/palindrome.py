@@ -40,6 +40,3 @@ def palindrome(A):
                             l = r+1 -(l-1) + 1
 
     return A[start:end+1]
-
-A = 'kkokkak'
-print(palindrome(A))
