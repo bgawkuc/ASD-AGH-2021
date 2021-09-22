@@ -1,7 +1,9 @@
-#scal k posortowanych linked_list
+#Proszę zaproponować algorytm scalający k posortowanych list.
 
+#Wszystkie k linked list dodaje do kopca - min heap. Wyjmuje z kopca najmniejszy element, dodaje go do wyniku.
+#Jesli linked lista była 1-elementowa to ją usuwam, w przecwinym wypadku przechodzę w niej dalej.
+#Cała procedura powtarza się dopóki kopiec nie będzie pusty.
 
-#zrobiony za pomocą kopców
 class Node:
     def __init__(self, value=None):
         self.value = value
@@ -79,9 +81,8 @@ def mergeKlists(L):
     res = Node()
     head = res
 
-    # dopoki kopiec nie jest pusty
     while heap:
-        # listq o najmniejszym el
+        # lista o najmniejszym el
         mini = heap[0]
         minNode = mini
 
@@ -112,45 +113,3 @@ T = [l1, l2, l3]
 L = mergeKlists(T)
 printList(L)
 
-
-#słaby pomysł- zła złożoność
-class Node1():
-    def __init__(self):
-        self.next = None
-        self.value = None
-
-def printList(L):
-    while L:
-        print(L.value,end=" ")
-        L = L.next
-    print()
-
-def tab2list(T):
-    L = Node()
-    a = L
-    for i in range(len(T)):
-        b = Node1()
-        b.value = T[i]
-        a.next = b
-        a = b
-    return L.next
-
-def merge_k_list(T,k):
-    head_0 = T[0]
-    i = 1
-    while i < k:
-        while head_0.next:
-            head_0 = head_0.next
-        head_0.next = T[i]
-        i += 1
-    return T[0]
-
-
-t1 = [1,2,3]
-t2 = [4,5]
-t3 = [6,7]
-l1 = tab2list(t1)
-l2 = tab2list(t2)
-l3 = tab2list(t3)
-T = [l1,l2,l3]
-printList(merge_k_list(T,3))
