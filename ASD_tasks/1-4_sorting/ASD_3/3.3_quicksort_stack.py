@@ -1,35 +1,32 @@
-#quicksort ze stosem
-#z uzyciem pop i append (pop sciaga ostatni el ze stosu)
+# Proszę zaimplementować algorytm QuickSort bez użycia rekurencji 
 
-def partition(T,l,r):
-    pivot = T[r]
+def partition(A,l,r):
+    pivot = A[r]
     i = l
     for j in range(l,r):
-        if T[j] <= pivot:
-            T[i],T[j] = T[j],T[i]
+        if A[j] <= pivot:
+            A[i],A[j] = A[j],A[i]
             i += 1
-    T[i],T[r] = T[r],T[i]
+    A[i],A[r] = A[r],A[i]
     return i
 
-#zajmuje tylkon O(logn) pamieci dzieki temu ze dzialam najpierw tylko na mniejszym przedziale a potem na wiekszym
-def qsort(T):
-    S = []
-    n = len(T)
-    l = 0
-    r = n - 1
+def quickSort(A):
+    S = [] 
+    n = len(A)
+    l,r = 0,n-1
+    #dodaje na stos krotki z indeksem lewym i prawym
     S.append((l,r))
+    
     while len(S) > 0:
         (l,r) = S.pop()
         if l < r:
-            q = partition(T,l,r)
-            if q - l < r - q: #gdy lewa czesc jest mniejsza
-                S.append((q+1,r)) #najpierw dodaje krotke z prawej czesci
-                S.append((l,q-1)) #potem dodaje krotke mniejszego przedialu
-                # bo to ja sciagne ze stosu i dla niej mam dzialac
+            q = partition(A,l,r)
+            
+            #na stos dodaje najpierw większy przedział, a potem mniejszy
+            if q - l < r - q: 
+                S.append((q+1,r)) 
+                S.append((l,q-1))
+        
             else:
                 S.append((l,q-1))
                 S.append((q+1,r))
-
-t = [9,2,8,7,1,0]
-qsort(t)
-print(t)
