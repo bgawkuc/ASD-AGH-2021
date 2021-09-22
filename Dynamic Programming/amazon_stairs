@@ -4,6 +4,7 @@ A[i] - maksymalna długość skoku jaką mogę wykonać z i-tego pola.
 
 #dp[i] - ilosc sposobów na jakie mogę się dostać z i-tego pola na ostatnie
 
+
 def cntWays(A):
     n = len(A)
     dp = [0] * n 
