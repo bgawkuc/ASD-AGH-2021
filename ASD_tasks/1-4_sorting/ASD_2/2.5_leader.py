@@ -2,41 +2,27 @@
 #O(n), który stwierdza, czy istnieje liczba x (tzw. lider A), która występuje w A
 #na ponad połowie pozycji
 
-#tworze zmienne idx_leader(indeks lidera) oraz cnt(ilosc wystapien)
-#przechodze liniowo tablice
-#jesli cnt wynosi 0 to obecny idx ustawiam na idx leader i cnt zwiekszam o 1
-#jesli wartosc pola na ktorym jestem odpowiada T[idx_leader] czyli tyle ile pole lidera to cnt zwiekszam o 1
-#w pozostłaych przypadakch cnt zmniejszma o 1
-#na koniec tablica mi zwroci idx POTENCJALNEGO lidera
-#i potem jeszcze raz liniowo przechodze tablice i sprawdzam ile razy on wystąpił
-#jesli liczba jego wystąpień jest >= dlg polowy tablicy to jest on liderem
-
-
-def leader(T):
+#szuka potencjalnego indeksu lidera
+def leader(A):
     cnt = 0 #ilosc wystapien
-    ind_leader = 0 #idx lidera
+    idx = 0 #indeks lidera
 
-    for i in range(len(T)):
+    for i in range(len(A)):
         if cnt == 0:
-            ind_leader = i
+            idx = i
             cnt += 1
-        elif T[i] == T[ind_leader]:
+        elif A[i] == A[idx]:
             cnt += 1
         else:
             cnt -= 1
 
-    return ind_leader
+    return idx
 
-
-def more_than_half(T):
-    ind = leader(T)
+#sprawdza czy zadana wartość występuje na powyżej połowie pozycji
+def more_than_half(A):
+    idx = leader(A)
     cnt = 0
-    for i in range(len(T)):
-        if T[i] == T[ind]:
+    for i in range(len(A)):
+        if A[i] == A[idx]:
             cnt += 1
-    if cnt > len(T) // 2:
-        return True
-    return False
-
-T = [1,1,2,2,2]
-print(more_than_half(T))
+    return cnt > len(A) // 2
