@@ -48,7 +48,3 @@ def activities(A):
                 p2 = "free"
 
     return order
-
-
-x = [(99, 150), (1, 100), (100, 301), (2, 5), (150, 250)]
-print(activities2(x))
