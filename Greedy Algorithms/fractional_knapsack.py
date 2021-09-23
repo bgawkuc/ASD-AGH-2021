@@ -15,18 +15,19 @@ def knapsack(W,P,maxW):
     #sortuje po wartości zysk/kg malejąco
     A.sort(key= lambda x: x[0],reverse=True)
 
-    p = 0.0
+    profit = 0.0
 
     for i in A:
-        if maxW > 0: 
+        if maxW > 0:
+            #indeks przedmiotu w wejściowej tablicy
             idx = i[1]
             
             #gdy da sie zabrac caly przedmiot
             if W[idx] <= maxW: 
-                p += P[idx]
+                profit += P[idx]
                 maxW -= W[idx]
             
             #gdy caly przedmiot sie nie miesci
             else: 
-                p += maxW * (P[idx]/W[idx])
-                return p
+                profit += maxW * (P[idx]/W[idx])
+                return profit
