@@ -1,51 +1,45 @@
-#problem z aktywnosciami
-#tylko wykonuje je dwie osoby
-#czy dadza one rade wykonac wszystkie czynnosci
-#dwie osoby nazywam je p1,p2
-#zwraca mi kolejnosc ktora aktywnosc wykonuje ktora osoba
+#Dostaje tablice zadań A wypełnioną krotkami, które zawierają informacje na temat początku i końca czynności.
+#Sprawdź czy wszystkie czynności mogą zostać zrealizowane przez 2 osoby, jeśli każda osoba może jednocześńie wykonywać 
+#maksymalnie 1 czynność.
 
-#do tablicy wpisuje czas rozpoczecia,nr czynnosci, start(tzn ze sie zaczyna)
-#do tablicy wpisuje czas zakonczenia,nr czynnosci, end(tzn ze sie konczy)
-#ustawiam status obu osob na free
-#przechodze liniowo po tab i sprawdzam pole tab[i][2] (status start/end)
-#gdy jakas czynnosc ma status start to szukam wolnej osoby
-#daje tej osobie status busy i wpisuje jej inicjaly do tabeli koelejnosc
-#gdy trafie na status busy to sprawdzam kto robil to zadanie(kazde zadanie ma swoj numer) i znowu mu daje status free
-#i tak dopoki nie przejde wszystkich czynnosci
-
-def activities2(A):
+def activities(A):
     n = len(A)
-    order = [None] * n #odpowiednio ktore zadanie robi osoba p1/p2 patrzac na wejsciowa tablice
+    #kto wykonuje zadanie o indeksie i
+    order = [None] * n 
+    
+    #każda zadanie rozdielam na 2 krotki - jedna z czasem rozpoczenia, a druga z zakończenia
     T = []
+    for i in range(n): 
+        T.append([A[i][0],i,"start"])
+        T.append([A[i][1],i,"end"]) 
+    
+    #sortuje po czasach rosnąco
+    T.sort(key=lambda a:a[0])
 
-    for i in range(n): #dodaje do times osobno czas rozp,nr zad i start(czyli sie zaczyna) oraz analogicznie z czasem zakonczenia
-        T.append([A[i][0],i,"start"]) #(poczatek,idx zad,start)
-        T.append([A[i][1],i,"end"]) #(koniec,idx zad,end)
-
-    T.sort(key=lambda a:a[0]) #sortuje po czasach
-    print(T)
-
-    #free-wolna, busy-zajeta
+    #status każdej osoby ustalam jako wolna
     p1 = "free"
     p2 = "free"
+    
+    #przeglądam zajęcia, jeśli trafie na początek to szukam wolnej osoby dla tej czynności (o ile istnieje), zmieniam jej status, zapmiętuje kto wykonuje zadanie
+    #gdy trafię na koniec zmieniam status osoby, która robiła dane zadanie
+    for i in range(len(T)):
 
-    for i in range(len(T)): #przegladam po kolei elementy
+        if T[i][2] == "start":
 
-        if T[i][2] == "start": #gdy zaczyna sie czynnosc szukam wolnej osoby
-
-            if p1 == "free": #jesli jest wolny
+            if p1 == "free":
                 p1 = "busy"
                 order[T[i][1]] = "p1"
 
             elif p2 == "free":
                 p2 = "busy"
                 order[T[i][1]] = "p2"
-
-            else: #gdy obie osoby są zajęte tzn ze nie da sie wykonac wszystkich czynnosci
+            
+            #gdy obie osoby są zajęte tzn ze nie da sie wykonac wszystkich czynnosci
+            else: 
                 print("impossible")
                 return
 
-        else: #gdy czynnosc sie konczy(=end) to ta osoba ktora wykonywala czynnosc dostaje znowu status free
+        else:
 
             if order[T[i][1]] == "p1":
                 p1 = "free"
