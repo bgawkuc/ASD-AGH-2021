@@ -1,7 +1,6 @@
-
 # Proszę zaproponować algorytm dla dwuwymiarowej wersji dyskretnego problemu plecakowego.
 # Mamy dany zbiór n przedmiotów i dla każdego przedmiotu dane sa nastepujace trzy liczby: 
-#P[i] - cena, W[i] - waga, H[i] - wysokosć. Mamy ograniczenie plecaka w postaci maksymalnej wagi i wysokości.
+# P[i] - cena, W[i] - waga, H[i] - wysokosć. Mamy ograniczenie plecaka w postaci maksymalnej wagi i wysokości.
 
 #dp[i][w][h] - max zysk jaki da sie uzyskac patrzac na przedmioty o indeksach od 0 do i oraz mając ograniczenie wagi w i wysokosci h
 
