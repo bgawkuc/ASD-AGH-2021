@@ -1,30 +1,13 @@
-#silnie spójne składowe
-#w grafie skierowanym
-#niech G= (V,E) bedzie gr skierowanym
-#mowimy ze wierzcholki u,v naleza do tej samej silnej spojnej skladowej
-#jesli istnieją sciezki skierowane z u do v oraz z v do u
+#Algorytm do znalezienia silnie spójnych składowych w grafie skierowanym.
+#SSS - to taki maksymalny podgraf grafu G (i jednocześnie jego spójna składowa), w którym pomiędzy każdymi 2 wierzchołkami istnieje ścieżka.
+#Implementacja dla list sąsiedztwa.
 
-#czyli np 3 cykle trojkaty polaczone ze soba krawędziami
-#i kazdy taki cykl bylby silnie spójną składową
-
-#wykonuje sortowanie topologiczne
-#i odwracam wszystkie krawędzie
-#wtedy zaczynam odcinac po kolei wierzcholki z ktorych nie da sie przejsc dalej
-#i przydzielam im jakies numery kolejne
-
-#algorytm
-#wykonaj dfs dla grafu wejsciowego zapisujac w wierzcholkach czas przetworzenia
-#odwróć kolejność krawędzi
-#wykonaj dfs drugi raz w kolejnosci malejacych czasow przetworzenia(petla visited-dziala w tej kolejnosci)
-#gdy nie bede miała ruchu tzn ze znalzlam silnie spojną składową
-
-
-#DFS w ktorym zapisuje czas przetworzenia -> 1 krok
+#sortowanie topologiczne, zwraca tablice krotek (czas przetworzenia,wierzchołek)
 def DFS(G):
     time = 0
     n = len(G)
     visited = [False] * n
-    finish = [None] * n
+    finish = []
 
     def DFSvisit(u):
         nonlocal time
@@ -35,16 +18,15 @@ def DFS(G):
                 DFSvisit(v)
 
         time += 1
-        finish[u] = (time,u) #czas przetworzenia, wierzcholek
-
+        finish.append((time,u)) 
+        
     for u in range(n):
         if not visited[u]:
             DFSvisit(u)
 
     return finish
 
-#funkcja która odwraca krawędzie
-#tworzy nowy graf rozmiaru starego
+#tworzy graf z odwróconymi krawędziami
 def reverse(G):
     n = len(G)
     rev = [[] for _ in range(n)]
@@ -56,21 +38,21 @@ def reverse(G):
 
     return rev
 
-#znajduje ilosc scc i je wypisuje
-def components(G):
+def SCC(G):
     n = len(G)
-    #tablica czasow przetworzenia posortowana malejąco
+    
+    #tablica z sortowania topologicznego posortowana malejąco
     times = sorted(DFS(G))[::-1]
 
     #graf z odworconymi krawędziami
     rev = reverse(G)
 
-    comp = [] #tablice z wierzch sss
+    comp = []
     cnt = 0 #ilosc sss
     visited = [False] * n
 
-    def visit(u): #zqykly DFSvisit
-        comp[cnt].append(u) #dodaje wierzch do i-tej sss
+    def visit(u): 
+        comp[cnt].append(u) #
         visited[u] = True
 
         for v in rev[u]:
@@ -78,33 +60,12 @@ def components(G):
                 visit(v)
 
     for t in times:
-        u = t[1] #wyciagam nr wierzch o max czasie przetworzenia
-        if not visited[u]: #i jesli nie był on odwiedzony
+        u = t[1] #wyciagam nr wierzch o maksymalnym czasie przetworzenia
+        #jeśli nie był odwiedzony to jest on elementem nowej sss, którą odtwarzam za pomocą pojedyńczego wywołania dfs
+        if not visited[u]: 
             comp.append([])
-            visit(u)#to dla niego wywoluje dfsvisit i od niego zacznie sie sss
+            visit(u)
             cnt += 1
-
+    
+    #zwraca ilość sss oraz ich wygląd
     return cnt,comp
-
-G = [
-    [2,4],
-    [9,0],
-    [1],
-    [4,6],
-    [5],
-    [3],
-    [5],
-    [3,9],
-    [7],
-    [10],
-    [8],
-]
-
-
-
-print(components(G))
-
-
-
-
-
