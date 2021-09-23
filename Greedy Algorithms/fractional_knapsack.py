@@ -1,10 +1,8 @@
-#problem plecakowy ale mozna brak ulamkowe części
+#Problem plecakowy, w którym można brać ulamkowe części przedmiotów.
 
-#na podstawie tablicy wag i profitow obliczam zysk/1kg
-#sortuje po najwiekszych takich wartosciach
-#sprawdzam czy da sie wziac caly rzedmiot o obecnym max zysku/kg
-#jesli tak to go biore
-#jak nie to sprawdzam ile kg jego da sie wybrac to biore
+#Na podstawie tablicy wag i profitow obliczam zysk/1kg i sortuje tablice po najwiekszych takich wartosciach.
+#Patrząc na taką tablice staram się wybierać całe przdmioty, gdy nie będzie to możliwe to biorę część przedmiotu.
+#Wybieram przedmioty zaczynając od maksymalnego zysku za 1kg.
 
 def knapsack(W,P,maxW):
     n = len(W)
@@ -13,26 +11,22 @@ def knapsack(W,P,maxW):
     for i in range(n):
         A[i][1] = i
         A[i][0] = P[i]/W[i] #zysk za kg
-
-    A.sort(key= lambda x: x[0],reverse=True) #sortuje wg 1 el malejaoa, czyli jeso pos od max zysk/kg
-    print(A)
+    
+    #sortuje po wartości zysk/kg malejąco
+    A.sort(key= lambda x: x[0],reverse=True)
 
     p = 0.0
 
-    for i in A:#biore przedmioty od tych po max zysku/kg
-
-        if maxW > 0: #gdy mam miejsce w plecaku
-            idx = i[1] #indeks przedmiotu z wejsciowej tab
-
-            if W[idx] <= maxW: #gdy da sie zabrac caly przedmiot
+    for i in A:
+        if maxW > 0: 
+            idx = i[1]
+            
+            #gdy da sie zabrac caly przedmiot
+            if W[idx] <= maxW: 
                 p += P[idx]
                 maxW -= W[idx]
-
-            else: #gdy caly przedmiot sie nie miesci
+            
+            #gdy caly przedmiot sie nie miesci
+            else: 
                 p += maxW * (P[idx]/W[idx])
-                maxW = 0
-    return p
-
-P = [1,2,3,4]
-W = [6,5,4,2]
-print(knapsack(W,P,8)) #biore caly przedmiot o Proficie 4 oraz 3 oraz 2kg * (2/5=0.4) czyli zysk: 7.8
+                return p
