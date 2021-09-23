@@ -1,31 +1,29 @@
-#mam ciezarowke o jakiejs pojemnosci k
-#oraz pudelka z ktorych kazdy ma przypisana wage
-#kazda waga jest jakas potega dwojki
-#znajdz minimalna ilosc pudelek tak by wypelnic maksymalnie przyczepe do pojemnosci k
+# Mamy przyczepę o pojemności K kilogramów oraz zbiór ładunków
+# o wagach w1, . . . , wn. Waga każdego z ładunków jest potęgą dwójki (czyli, na przykład, dla siedmiu ładunków
+# wagi mogą wynosić 2, 2, 4, 8, 1, 8, 16, a pojemność przyczepy K = 27). Proszę podać algorytm zachłanny (i
+# uzasadnić jego poprawność), który wybiera ładunki tak, że przyczepa jest możliwie maksymalnie zapełniona
+# (ale bez przekraczania pojemności) i jednocześnie użyliśmy możliwie jak najmniej ładunków. (Ale jeśli da się
+# np. załadować przyczepę do pełna uzywając 100 ładunków, albo zaladować do pojemności K − 1 używając
+# jednego ładunku, to lepsze jest to pierwsze rozwiązanie).
 
-#wystarczy posortowac wagi malejąco
-#przechodze od najwiekszej
-#i sprawdzam czy nie przekracza ona wagi obecnej
-#jesli nie to wybieram to pudelko
-#to zadziala dzieki temu ze mam wartosci typu 1,2,4,8,16,32,64
-#bo kazda waga jet dwa razy wieksza wiec nie ma mozliwosci by to nie zadzialalo
+#Sortuje pudełka po wagach rosnąco. Wybieram pudełka od najcięższych.
+#Po każdym wybraniu pudełka zmniejszam wartość k o jego wagę oraz zwiększam licznik wybranych pudełek.
+#Powtarzam dopóki nie skończą mi sie pudełka lub nie będę w stanie wybrać danego.
 
-
-def loading(A,x):
+def loading(A,k):
     n = len(A)
-    A.sort() # sortuje tablice A rosnaca
-    cnt = 0 #licznik ilosci pudelek
-    idx = n - 1 #zaczynam od idx najciezszego pudelka
+    # =sortuje tablice A rosnaca
+    A.sort()
+    cnt = 0 
+    #zaczynam od najciezszego pudelka
+    idx = n - 1
 
-    while x > 0 and idx >= 0:
-
-        if x >= A[idx]: #gdy wahga pudelka nie przekracza pojemnosci
+    while k > 0 and idx >= 0:
+        
+        #gdy waga pudelka nie przekracza pojemnosci
+        if k >= A[idx]:
             cnt += 1
-            x -= A[idx]
+            k -= A[idx]
         idx -= 1
 
     return cnt
-
-t = [2, 2, 4, 8, 1, 8, 16]
-#dla wagi 27 >= 16 + 8 + 2 + 1 -> 4 obiekty
-print(loading(t,27))
