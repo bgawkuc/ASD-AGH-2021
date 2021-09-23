@@ -19,7 +19,7 @@ def LIS(A):
     #przechodze liniowo po A
     for i in range(1,n): 
         
-        #gdt znaleziony element jest mniejszy od najmniejszego to najmniejszy nim zastępuje
+        #gdy znaleziony element jest mniejszy od najmniejszego to najmniejszy nim zastępuje
         if A[i] < tail[0]: 
             tail[0] = A[i]
         
@@ -27,8 +27,9 @@ def LIS(A):
         elif A[i] > tail[length-1]: 
             tail[length] = A[i]
             length += 1
-
-        else: #gdy jest pomiedzy to znajduje miejsce za pomocą binary search, w którym trzeba go wpisać
+        
+        #gdy jest pomiedzy to znajduje miejsce za pomocą binary search, w którym trzeba go wpisać
+        else:
             tail[binSearch(tail, -1, length-1, A[i])] = A[i]
 
 
