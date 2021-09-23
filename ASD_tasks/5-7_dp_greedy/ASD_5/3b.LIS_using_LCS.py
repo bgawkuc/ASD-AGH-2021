@@ -1,4 +1,3 @@
-
 # Jak wykorzystać algorytm dla problemu najdłuższego wspólnego podciągu do rozwiązania zadania
 # najdłuższego rosnącego podciągu?
 
