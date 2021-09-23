@@ -1,18 +1,9 @@
-#szukam w grafie cyklu eulera
-#cykl eulera-taka droga w grafie ktora przechodzi po kazdej krawedzi 1 raz
-#aby cykl eulera istanial to graf musi byc, spojny i stopien kazdego w musi byc parzysty(rózny od 0!)
-#gdy odwiedze jakąs krawedz wspisuje 2 zamiast 1
+#Algorytm, który szuka w grafie cyklu Eulera (to taki cykl, który przechodzi przez każdą krawędź tylko raz).
+#Warunki na cykl Eulera:
+#1) graf musi być spójny
+#2) każdy wierzchołek musi być stopnia parzystego minimum 2 (nie może posiadać wierzchołków izolowanych)
 
-#algorytm
-#wykonuje DFS usuwajac na biezaco kraw po ktorych wedrujemy
-#zapisuje przy okazji odwiedzone wierzcholki w visited
-#po przetworzeniu wierzcholka dodajemy go na poczatek listy wynikowej
-#czyli odtwarzam sciezke od tylu i tak dopisuje do tablicy
-
-#sprawdzam najpiew czy kazdy stopien wierzcholka jest parzystego stopnia lub czy nie jest izolowany
-#gdyby nie był parzystego lub byl izolowany tzn ze nie posiada takiego cyklu
-#potem wywoluje szukanie cyklu
-#uzywam dfs gdy jakas krawedz bedzie odwiedzona to zmieniem jej wartosc na 2 by w nia nie wejsc ponownie
+#Implementacja dla reprezenyacji macierzowej, 1 - krawędź, 0 -brak krawędzi.
 
 #sprawdza czy kazdy wiercholek jest parzysty oraz czy nie ma wierzcholkow izolowanych
 def isDegreeEven(G):
@@ -21,7 +12,8 @@ def isDegreeEven(G):
         for j in range(len(G)):
             if G[i][j] == 1:
                 cnt += 1
-        if cnt % 2 != 0 or cnt == 0: #czyli jak nie ma stopnia parzystego lub jest wierzcholkiem izolowanym
+        #czyli jak nie ma stopnia parzystego lub jest wierzcholkiem izolowanym
+        if cnt % 2 != 0 or cnt == 0: 
             return False
     return True
 
@@ -35,15 +27,18 @@ def cycle(G):
         visited[u] = True
         for v in range(n):
             if G[u][v] == 1:
-                G[u][v] = G[v][u] = 2 #odznaczam krawedzie odwiedzone
+                #odznaczam krawedzie odwiedzone
+                G[u][v] = G[v][u] = 2 
                 DFSvisit(v)
 
-        order.append(u) #gdy rekurencja sie cofa to dodaje odwiedzony wiercholek
+        order.append(u)
 
     DFSvisit(0)
+    
+    #sprawdza czy graf jest spójny
     for i in range(n):
         if not visited[i]:
-            return 'niespojny'
+            return False
 
     return order
 
@@ -51,32 +46,4 @@ def cycle(G):
 def eulerCycle(G):
     if isDegreeEven(G):
         return cycle(G)
-
-
-G = [
-    [0,0,1,1,0,0],
-    [0,0,0,1,0,1],
-    [1,0,0,1,0,0],
-    [1,1,1,0,1,0],
-    [0,0,0,1,0,1],
-    [0,1,0,0,1,0],
-]
-
-G1 = [
-    [0,1,1,1,1],
-    [1,0,0,0,1],
-    [1,0,0,1,0],
-    [1,0,1,0,0],
-    [1,1,0,0,0],
-]
-
-#niespojny
-G2 = [
-    [0,1,1,0,0,0],
-    [1,0,1,0,0,0],
-    [1,1,0,0,0,0],
-    [0,0,0,0,1,1],
-    [0,0,0,1,0,1],
-    [0,0,0,1,1,0]
-]
-print(eulerCycle(G2))
+    return False
