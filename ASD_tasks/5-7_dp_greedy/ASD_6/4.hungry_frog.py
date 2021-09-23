@@ -1,46 +1,31 @@
-#zaba porusza sie po osi liczbowej
-#chce ona dostac sie z pola o ind 0 do n - 1
-#na kazdym polu stoi przekaska o jakiejs wartosci energetycznej
-#skok z pola j na i kosztuje ją i - j energii
-#trafiajac na jakies pole zjada przekaske ktora tam jest
-#oblicz min ilosc skokow by zaba dostala sie na pole o ind n - 1
-#a jej energia nigdy nie moze spasc ponizej 0
+# Pewna żaba skacze po osi liczbowej. Ma się dostać z zera do n − 1, skacząc
+# wyłącznie w kierunku większych liczb. Skok z liczby i do liczby j (j > i) kosztuje ją j − i jednostek energii, a
+# jej energia nigdy nie może spaść poniżej zera. Na początku żaba ma 0 jednostek energii, ale na szczęście na
+# niektórych liczbach—także na zerze—leżą przekąski o określonej wartości energetycznej (wartość przekąki
+# dodaje się do aktualnej energii Zbigniewa). Proszę zaproponować algorytm, który oblicza minimalną liczbę
+# skoków potrzebną na dotarcie z 0 do n − 1 majać daną tablicę A z wartościami energetycznymi przekąsek na
+# każdej z liczb.
 
-#tworze tablice dp[n][n] zapełnioną inf
-#dp[x][y] min ilosc skokow gdy dostane sie na pole x i zostanie mi y energii
+#dp[x][y] - minimalna ilość skoków jaką się dostane na pole x
+#kiedy na polu x mam y energii (wliczam zjedzoną przekąske co lezy na x)
+#złożoność: O(n^3)
 
-#mam 3 pętle
-#pętla z end -> idx pola na jakie chce skoczyc [od 1 do n - 1]
-#pętla z start -> pole z jakiego skacze [od 0 do i-1]
-#pętla z startEnergy -> ilosc energii jaką posiada żaba na polu end [od end-start do n - 1]; od  end-start bo jakby było mniej to skok nie byłby możliwy
+def frog(A):
+    n = len(A)
+    inf = float("inf")
+    dp = [[inf] * n for _ in range(n)]
+    dp[0][A[0]] = 0 
+    
+    #start,end-indeks na jakim zaczynam i kończe skok
+    #startEnergy,endEnergy-ilość energii na polu start i end(po zjedzeniu przekąski z tego pola)
+    for end in range(1,n): 
+        for start in range(end): 
+            for startEnergy in range(end-start,n): 
+                endEnergy = startEnergy - (end-start) + A[end]
+                
+                if endEnergy >= n:
+                    endEnergy = n-1
 
-#endEnergy - > ilosc energii jaka mi zostanie gdy wykonam skok z pola j na i mając k energii
-#endEnergy = startEnergy - (end-start) + A[end] (ilosc energii jaką posiada na polu end - koszt skoku + dodatek energii z pola end)
-#czyli jesli endEnergy < n
-#to dp[end][endEnergy] -> min liczba skoków by się dostać na pole end mając endEnergy energii
-#dp[end][Energy] = min(dp[end][endEnergy]; dp[start][startEnergy] + 1)
-#minimalna ilosc skokow to min z ostatniego wiersza
+                dp[end][endEnergy] = min(dp[end][endEnergy], dp[start][startEnergy] + 1)
 
-import math
-
-def zbigniew(A):
-        n = len(A)
-        #min ilosc skokow by dostac sie na pole end(wiersz) majac endEnergy na nim(kolumna)
-        dp = [[math.inf] * n for _ in range(n)]
-        dp[0][A[0]] = 0
-
-
-        for end in range(1,n): #pole na jakie chce skoczyc
-            for start in range(end): #pole z jakiego skacze
-                for startEnergy in range(end-start,n): #ilosc energii na polu start
-
-                    endEnergy = startEnergy + A[end] - (end-start) #ilosc energii na polu end po zjedzeniu przekaski
-
-                    if endEnergy < n: #czy nie jest za duzo tej energii
-                        dp[end][endEnergy] = min(dp[end][endEnergy],dp[start][startEnergy]+1)
-
-        return min(dp[-1])
-
-
-A = [2,2,1,1,1,0]
-print(zbigniew(A))
+    return min(dp[-1])
