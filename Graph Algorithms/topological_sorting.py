@@ -1,18 +1,7 @@
-#DAG - directed acyclic graph
-#dotyczy grafow skierowanych, acyklicznych
-#sortowanie topologiczne dagu polega na ulozeniu wierzcholkow w takiej
-#kolejnosci ze krawedzie wskazuja tylko z lewej na prawą
-
-#to takie sortowanie wierzchołków
-#w ktorym jesli istnieje krawedz od x do y to x znajdzie sie przed y
-#zastosowania
-#a ---> b zadanie b musi byc wykonane przed a
-
-#algorytm:
-#wykonac DFS
-#po przetworzeniu danego wiezrcholka dopisujemy go na poczatek listy
-#przetworzony czyli przeszlam z niego do wszystkich mozliwych wierzcholkow
-#a na koncu zwracam taką listę tylko że odwróconą
+#Sortowanie topologiczne dla grafu skierowanego.
+#Ustala kolejność wierzchołków w ten sposób, by każdy wierzchołek znajdował się przed wierzchołkami, 
+#do których prowadzą krawędzie z niego wychodzące.
+#Implementacja dla reprezentacji przez listy sąsiedztwa.
 
 def DFS(G):
     order = []
@@ -20,8 +9,7 @@ def DFS(G):
 
     def DFSvisit(u):
         visited[u] = True
-        for i in range(len(G[u])):
-            v = G[u][i]
+        for v in G[u]:
             if not visited[v]:
                 DFSvisit(v)
 
@@ -32,24 +20,3 @@ def DFS(G):
             DFSvisit(u)
 
     return order[::-1]
-
-G = [
-    [1,2,4],
-    [2,3],
-    [],
-    [5,6],
-    [3],
-    [],
-    [],
-]
-
-G1 = [
-    [1],
-    [2,3],
-    [0],
-    [4],
-    [5],
-    [3],
-]
-
-print(DFS(G1))
