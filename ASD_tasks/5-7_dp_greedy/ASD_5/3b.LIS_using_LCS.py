@@ -1,48 +1,10 @@
-#zloznosc O(n^2)
-#najdluzszy rosnacy na bazie najdluzszego wspolnego
 
-#algorytm wygląda tak samo jak algorytm na LCS
-#trzeba posortowac wejsciowy ciag rosnący
-#tworze tablice rozmiarow jego dlg+1 na jego dlg+1
-#tylko jako ciąg A daje posortowany a jako ciąg B nieposortowany
-#przechodze po wierszach i kolumnach sprawdzajac ile wynosi obecna dlg wspolnego podciagu
+# Jak wykorzystać algorytm dla problemu najdłuższego wspólnego podciągu do rozwiązania zadania
+# najdłuższego rosnącego podciągu?
 
-def insertion_sort(A):
-    for i in range(1,len(A)):
-        new = A[i]
-        j = i - 1
-        while j >= 0 and A[j] > new:
-            A[j+1] = A[j]
-            j -= 1
-        A[j+1] = new
-    return A
+#Algorytm działa w ten sam sposób co LCS, przy zapełnianiu tablicy dp porównuje elemnty z tablicy wejściowej
+#i posortowanej tablicy wejściowej
 
-def LIS_uisng_LCS(A):
-    n = len(A)
-
-    L = [[0] * (n+1) for _ in range(n+1)]
-
-    notsortedA = A[:]
-
-    sortA = insertion_sort(A)
-
-
-    for i in range(1,n+1):
-
-        for j in range(1,n+1):
-
-
-            if (notsortedA[i-1] == sortA[j-1]):
-                L[i][j] = L[i-1][j-1] + 1
-
-            else:
-                L[i][j] = max(L[i-1][j],L[i][j-1])
-
-
-    return L[n][n]
-
-
-#CZYTELNIEJSZY ZAPIS I ODTWARZANIE WYNIKU
 def lis(A):
     n = len(A)
     # wiersze - A, kolumny - sortA
@@ -79,8 +41,9 @@ def lis(A):
             row -= 1
         else:
             col -= 1
-
-    return res[::-1], dp[n - 1][n - 1]
+    
+    #zwraca lis
+    return res[::-1]
 
 a = [1,9,7,2,0,4,8,6]
 print(LIS_uisng_LCS(a))
