@@ -1,48 +1,32 @@
-#wybor zadan z terminala
-#mam zadanie do wykonania
-#kazde z nich znajduje sie w 3 elementowej tablicy
-#ktora zawiera nr zadania, deadline, profit
-#gdy jakies zadanie uda mi sie wypelnic przed uplywem deadline to otrzmuje za nia profit
-#znajdz zadania ktore sie da zrobic tak by zysk byl mozliwie jak najwiekszy
+# Mamy dany zbiór zadań A, każde zadanie o indeksie i posiada: numer A[i][0], termin wykonania A[i][1] (liczba naturalna) oraz zysk A[i][2] za wykonanie w
+# terminie (liczba naturalna). Wykonanie każdego zadania trwa jednostkę czasu. Jeśli zadanie A[i][0] zostanie
+# wykonane przed przekroczeniem swojego terminu A[i][1], to dostajemy za nie nagrodę A[i][2] (pierwsze wybrane
+# zadanie jest wykonywane w chwili 0, drugie wybrane zadanie w chwili 1, trzecie w chwili 2, itd.).
+# Proszę podać algorytm, który znajduje podzbiór zadań, które można wykonać w terminie i który prowadzi do maksymalnego zysku.
 
-#sortuje zadania po zysku od najwiekszych do najmniejszych
-#szukam max deadline
-#tworze tab o jego rozmiarze
-#przechodze po tab wejsciowej
-#patrze na deadline pierwszego i umieszczam go na miejsce o ind deadline - 1(ostatni moment w ktorym da sie wykonac zad
-#by dostac za niego zysk)
-#gdyby to nie bylo mozliwe to szukam od miejsca deadline - 1 w dol pustego miejsca
-#gdtby takiego miejsca nie bylo tzn ze nie da sie umiescic takiego obiektu
-#zlozonosc o(n^2)
-
-# def profit(el):
-#     return el[2]
-
-def jobs(A):
+def task(A):
     n = len(A)
-    A.sort(key=lambda a: a[2],reverse=True) #sortuje po profitach malejaco
-
-    maxDeadline = A[0][1] #szukam najw deadline
+    #sortuje po zyskach malejąco
+    A.sort(key=lambda a: a[2],reverse=True) 
+    
+    #szukam najpóźniejszego terminu wykonania
+    maxDeadline = A[0][1]
     for i in range(1,n):
         if A[i][1] > maxDeadline:
             maxDeadline = A[i][1]
 
-    tasks = [None] * maxDeadline #tworze tablice o rozm maxdealine
+    t = [None] * maxDeadline 
 
     for i in range(n):
-        lastMoment = A[i][1] - 1 #ostatni moment w ktorym da sie zaczac zadanie by zyskac za nie profit
-
-        for j in range(lastMoment,-1,-1): #szukam miejsca by umiescic zadanie, staram sie je umiescic jak najdalej
-
-            if tasks[j] == None: #gdy ten moment jest wolny to umieszczam zadanie
-                tasks[j] = A[i][0]
+        #ostatni moment w ktorym da sie zaczac zadanie by zyskac za nie profit
+        lastMoment = A[i][1] - 1 
+        
+        #szukam miejsca by umiescic zadanie, staram sie je umiescic jak najdalej
+        for j in range(lastMoment,-1,-1): 
+            #gdy w tym momencie nie zaczyna się inne zadanie
+            if t[j] == None: 
+                t[j] = A[i][0]
                 break
-
-    return tasks #zwracam liste nr zadan ktore udalo mi sie zrobic
-
-
-#zadania: (nr zad, max czas zakonczenia, profit)
-b = [(1, 9, 15), (2, 2, 2), (3, 5, 18), (4, 7, 1), (5, 4, 25),
-     (6, 2, 20), (7, 5, 8), (8, 7, 10), (9, 4, 12), (10, 3, 5)
-    ]
-print(jobs(b))
+    
+    #zwracam liste momentów w jakich trzeba zacząc określone zadania by uzyskac największy zysk
+    return t
