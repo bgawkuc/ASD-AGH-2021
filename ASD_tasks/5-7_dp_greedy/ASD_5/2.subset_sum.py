@@ -20,7 +20,7 @@ def subsetSum(A,sum_):
 
             #gdy jest szansa by zabrac moją i-tą liczbe
             else:
-                dp[i][j] = (dp[i-1][j] or dp[i-1][j-T[i-1]])
+                dp[i][j] = (dp[i-1][j] or dp[i-1][j-A[i-1]])
                 
 
     return dp[n][sum_]
