@@ -1,20 +1,18 @@
-#mam N miast
-#kazde posiada współrzedne (x,y)
-#chcemy wybudowac siec autostrad tak aby z kazdego miasta dało sie dotzrec do kazdego
-#i aby roznica miedzy zakonczeniem budowy najpozniejszym a najwczesniejszym była minimalna
-#czas budowy autostrady z i do j to: sufit z sqrt((xi-xj)^2 + (yi-yj)^2)
+# W pewnym państwie, w którym znajduje się N miast, postanowiono połączyć  wszystkie miasta siecią autostrad, 
+# tak aby możliwe było dotarcie autostradą do każdego miasta. Ponieważ kontynent, na którym leży państwo jest
+# płaski położenie każdego z miast opisują dwie liczby x, y, a odległość w linii prostej pomiędzy miastami
+# liczona w kilometrach wyraża się wzorem len = sqrt((x1 − x2)^2 + (y1 − y2)^2). Z uwagi na oszczędności materiałów 
+# autostrada łączy dwa miasta w linii prostej. Ponieważ zbliżają się wybory prezydenta, wszystkie autostrady zaczęto 
+# budować równocześnie i jako cel postanowiono zminimalizować czas pomiędzy otwarciem pierwszej i ostatniej autostrady. 
+# Czas budowy autostrady wyrażony w dniach wynosi ⌈len⌉ (sufit z długości autostrady wyrażonej w km). Proszę zaproponować
+# algorytm wyznaczający minimalną liczbę dni dzielącą otwarcie pierwszej i ostatniej autostrady
 
-#czyli wystarczy mi wybudowac n - 1 dróg aby połączyc n wierzchołków
-#cztli szukam takiego mst w którym roznice miedzy wartosciami krawedzi sa mozliwie najmniejsze
-#wykorzystam do tego find union
-#majac zbior krawedzi posprtowany rosnąco
-#oraz zbiór set dla każdego wierzchołka
-#moge wybrac dana krawedz do mojej sciezki jesli rodzic dla wierzch u jest rozny od rodzica wierzch v
-#gdzie u,v to wierzcholki przylagajace do tej krawedzi
-#gdy wybiore juz n - 1 krawedzi to sprawdzam roznicy max - min i porwonuje ją z obecna min roznicą
-#powtarzam tą pracedurę zaczynając od krawedzi o idx 0,1,...az do krawedzi takiej ze z nia jest tylko n - 1 krawedzi
+#Tworzę tablice z wszystkimi możliwymi krawędziami między dowolną parą 2 wierzchołków, sortuje ją rosnąco.
+#Korzystając z struktury find-union szukam drzewa rozmiaru n-1, w którym różnica pomiędzy najmniejszą, a największą
+#krawędzią jest minimalna.
 
 from math import ceil,sqrt,inf
+
 class Node:
     def __init__(self,idx):
         self.idx = idx
@@ -22,11 +20,11 @@ class Node:
         self.rank = 0
 
 def findSet(x):
-    if x != x.parent: #jesli nie natrafiłam na korzeń
+    if x != x.parent:
         x.parent = findSet(x.parent)
     return x.parent
 
-def union(x,y):
+def union(x,y)
     x, y = findSet(x), findSet(y)
 
     if x.rank > y.rank:
@@ -37,42 +35,47 @@ def union(x,y):
         x.rank += 1
         y.parent = x
 
+#odległość między miastem i-tym a j-tym
 def dist(xi,yi,xj,yj):
     return ceil(sqrt( (xi-xj) ** 2 + (yi-yj) ** 2 ))
 
-
-def highway(G): #G-krotki z wspólrzednymi miast
+#G-krotki z wspólrzednymi miast
+def highway(G): 
     edges = []
     n =len(G)
-
+    
+    #tworzę tablice wszystkich mozliwych krawędzi
     for i in range(n):
         for j in range(i+1,n):
-            edges.append((i, j, dist(G[i][0],G[i][1],G[j][0],G[j][1]))) #nr miast, nr miasta, dlg budowy krawedzi miedzy nimi
+            edges.append((i, j, dist(G[i][0],G[i][1],G[j][0],G[j][1])))
 
     m = len(edges)
-    edges.sort(key= lambda x: x[2]) #sortuje rosnąco
-    minDif = inf #min roznica
-
-    for i in range(m-n+1): #idx krawędzi od której zacyznam wybieranie krawędzi
+    #sortuje rosnąc po wartościach krawędzi
+    edges.sort(key= lambda x: x[2]) 
+    #min roznica od czasu rozpoczęcia do zakończenia budowy
+    minDif = inf 
+    
+    #od jakiej krawędzi zaczynam wybierać
+    for i in range(m-n+1):
 
         sets = [Node(i) for i in range(n)]
-        mini, maxi = inf, -inf #min i max czas budowy na mojej sciezce
-        lenPath = 0
+        #min i max czas budowy w drzewie
+        mini, maxi = inf, -inf 
+        size = 0
 
-        for j in range(i,m): #i-idx krawędzi od której zaczynam sprawdzanie
-            if lenPath == n - 1: #gdy juz znalazlam sciezke o dlg n - 1
+        for j in range(i,m): 
+            #gdy juz znalazlam drzewo rozmiaru n - 1
+            if size == n - 1: 
                 minDif = min(minDif,maxi-mini)
                 break
 
             city1, city2, edge = edges[j]
-
-            if findSet(sets[city1]) != findSet(sets[city2]): #czy korzenie są rózne,(aby nie brac cykli), tylko mst
+            
+            #gdy miasto city1 i city2 nie zostały jeszcze połączone
+            if findSet(sets[city1]) != findSet(sets[city2]): 
                 mini = min(mini, edge)
                 maxi = max(maxi, edge)
                 union(sets[city1],sets[city2])
-                lenPath += 1 #zwiekszam dlg sciezki
+                size += 1 #zwiekszam rozmiar drzewa
 
     return minDif
-
-A =[(10,10),(15,25),(20,20),(30,40)]
-print(highway(A))
