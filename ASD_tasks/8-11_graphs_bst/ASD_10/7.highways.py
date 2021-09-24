@@ -64,10 +64,6 @@ def highway(G):
         size = 0
 
         for j in range(i,m): 
-            #gdy juz znalazlam drzewo rozmiaru n - 1
-            if size == n - 1: 
-                minDif = min(minDif,maxi-mini)
-                break
 
             city1, city2, edge = edges[j]
             
@@ -77,5 +73,10 @@ def highway(G):
                 maxi = max(maxi, edge)
                 union(sets[city1],sets[city2])
                 size += 1 #zwiekszam rozmiar drzewa
+            
+            #gdy juz znalazlam drzewo rozmiaru n - 1
+            if size == n - 1: 
+                minDif = min(minDif,maxi-mini)
+                break
 
     return minDif
