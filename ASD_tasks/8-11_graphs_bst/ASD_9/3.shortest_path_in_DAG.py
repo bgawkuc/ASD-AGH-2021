@@ -1,17 +1,10 @@
-#szukam najkrotszej sciezki wazonej w grafie skierowanym acykliczym(drzewie)
-#prowadzącej od s do e
+# Jak znaleźć najkrótsze ścieżki z wierzchołka s do wszystkich
+# innych w acyklicznym grafie skierowanym?
 
-#sortuje topologicznie wierzchołki
-#i wykonuje dijkstre(dla posortowanej top tablicy - bezk kolejki) - LEPSZA ZŁOŻONOŚĆ
-#wszystkie sciezki mają dlg inf poza tą z s do s która ma dlg 0
-#zaczynam od s(tego co jest przed nim nie musze brac pod uwage)
-#bo z definicji sortowania topologicznego wiem ze nie istnieje do nich
-#zadna sciezka z s
-#przegladam jego sąsiadów (v)
-#i dla kazdego sąsiada odpalam algorytm relaksacji z (s do v)
-#jako wynik otrzymam najktosze ściezki z s do kazdego osiągalnego wierzch
+#Należy wierzchołki posortować topologicznie, a następnie przechodzić po takiej posortowanej tablicy
+#i dla każdego wierzchołka oraz krawędzi z niego wychodzących sprawdzać warunek na relaksacje.
 
-
+#sortuje topologicznie wierzchołki w grafie G
 def topologicalSorting(G):
     n = len(G)
     visited = [False] * n
@@ -33,47 +26,34 @@ def topologicalSorting(G):
     return result[::-1]
 
 
-def Dijkstra(G,s,e):
+def shortestPath(G,s,t):
     inf = float("inf")
     n = len(G)
 
-    topSort = topologicalSorting(G) #posortowane topologicznie krawedzie
-    print(topSort)
-    parent = [None] * n #rodzic kazdego wierzcholka
-    dist = [inf] * n #odleglosc od s do kazdego innego
+    topSort = topologicalSorting(G) #posortowane topologicznie wierzchołki
+    parent = [None] * n 
+    dist = [inf] * n 
     dist[s] = 0
 
     start = False
 
-    for u in topSort: #przegladam wierzcholki po posortowaniu topologicznym
-        if u == s or start: #zaczynam dopiero od wierzch s
+    for u in topSort: 
+        #zaczynam dopiero gdy trafię na wierzchołek s
+        if u == s or start: 
             start = True
 
-            for edge,v in G[u]: #przegladam sąsiadów
+            for edge,v in G[u]: 
 
-                #CHYBA BRAKUJE POLA VISITED (albo nie bo nie ma pq)
-                if dist[v] > dist[u] + edge: #relaksacja
+                #relaksacja
+                if dist[v] > dist[u] + edge: 
                     dist[v] = dist[u] + edge
                     parent[v] = u
 
     #odtwarzanie ściezki
     path = []
-    last = e
+    last = t
     while last != None:
         path.append(last)
         last = parent[last]
 
-
-    return dist[e],path[::-1] #wartosc sciezki, sciezka
-
-
-
-#(waga,dziecko)
-G = [
-    [(1,1),(1,4)],
-    [(2,2),(10,3)],
-    [(4,3)],
-    [(2,4)],
-    [(2,1)],
-]
-print(Dijkstra(G,0,3))
+    return dist[t], path[::-1] 
