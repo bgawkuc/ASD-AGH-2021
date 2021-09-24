@@ -1,38 +1,27 @@
-#mam graf w którym wierzcholki przedstawiaja miasta
-#mam przwodnika ktory chce przewieźć mozliwie jak najwieksza grupę osob
-#grupa sie nie moze nigdy rozdzielic
-#podaj tę trase
-#na wejsciu dostaje graf z wierzcholkami oraz rozklad autobus
-#autobus to krotka(wierz startowy, wierzch koncowy, max pojemnosc osob)
+# Przewodnik chce przewieźć grupę K turystów z miasta A do miasta B. Po drodze jest jednak wiele innych miast 
+# i między różnymi miastami jeżdzą autobusy o różnej pojemności. Mamy daną listę trójek postaci (x, y, c), 
+# gdzie x i y to miasta między którymi bezpośrednio jeździ autobus o pojemności c pasażerów.
+# Przewodnik musi wyznaczyć wspólną trasę dla wszystkich tursytów i musi ich podzielić na grupki tak,
+# żeby każda grupka mogła przebyć trasę bez rodzielania się. Proszę podać algorytm, który oblicza na ile
+# (najmniej) grupek przewodnik musi podzielić turystów (i jaką trasą powinni się poruszać), źeby wszyscy
+# dostali się z A do B.
 
-#tworze algorytm analogiczny do algorytmu prima
-#musze wyznaczyc mozliwie najwiekszą wartosc pojemnosci
-#czyli prim bedzie szukał drzewa o mozliwie jak najwiekszych wartosciach
-#tzn najmniejsza wartosc w moim drzewie bedzie mozliwie jak najwieksza
-#ale wsrod wszystkich pojemnosci uzytych atobusow musze wybrac najmniejsza
-#(tak by zawsze cała grupa sie zmieściła)
-#wiec do kolejki w mst będę wrzucac pojemnosci autobusow ale z minusem
-#bo wtedy wyciaga mi od najwiekszych pojemnosci(bo to najmniejsze liczby przez minus)
-
-#na podstawie tablicy autobusow tworze graf NIESKIEROWANY
-#autobus-(x,y,pojemnosc)
-#czyli dodaje krawedz z x do y o wadze pojemnosc
-#ten graf przekazuje potem do prima
-#na podstawie niego otrzymuje tablice parentow mojego drzewa
-#jest to drzewo o mozliwie najwiekszych krawedziach
-#i tak odtwarzam moją trase
-#krawedz o min pojemnosci na mojej trasie to ilosc osob
+#Na bazie tablicy autobusów szukam największej wartości wierzchołka u i tworzę graf rozmiaru u + 1.
+#Dodaje w grafie krawędzie ważone między każdymi 2 wierzchołkami między, którymi kursuje autubus.
+#Dla takiego grafu wywołuje odwrócony algorytm Prima, który szuka drzewa rozpinającego o możliwie jak największych krawędziach.
+#Najmniejsza krawędź w takim drzewie odpowiada pojemności każdego autobusu, a drzewo wyznacza dokładną trasę.
 
 from queue import PriorityQueue
 
-def MST_Prim(G,s):
+def reversePrim(G,s):
     n = len(G)
     q = PriorityQueue()
     inf = float("inf")
 
     visited = [False] * n
     parent = [None] * n
-    max_weight = [-inf] * n #maksymalnie duza pojemnosc osob w autobusie na odinku od parenta do i-tego
+    #maksymalnie duza wartość krawędzi na trasie od s do i-tego wierzchołka
+    max_weight = [-inf] * n
 
     max_weight[s] = 0
 
@@ -46,64 +35,39 @@ def MST_Prim(G,s):
         _,u = q.get()
         visited[u] = True
 
-        for i in range(len(G[u])):
-            edge,v = G[u][i]
+        for edge,v in G[u]:
 
-            if not visited[v]:
-                if edge != inf and max_weight[v] < edge: #jesli krawędź jest wieksza od tej obecnej dochadzacej do wierzcholka v
-                    max_weight[v] = edge #to ją aktualizuje
-                    parent[v] = u #aktualizuje rodzica
-                    q.put((-max_weight[v],v)) #wrzucam ujemną wartosc by wyciągało mi od najwiekszych pojemnosci
+            if not visited[v] and edge > max_weight[v]:
+                max_weight[v] = edge 
+                parent[v] = u
+                #wrzucam ujemną wartosc, by z kolejki wyciągać elementy o największych wartościach
+                q.put((-max_weight[v],v)) 
+    
     return parent
 
 
-def tourGuide(bus,s,e):
+def tourGuide(bus,s,t):
     n = len(bus)
     maxi = bus[0][1] #max wartosc konca - rozmiar grafu
 
     #szukam max wartosci końca aby wiedziec jakiego rozmiaru stworzyc graf
     for i in range(1,n):
-        if bus[i][1] > maxi:
-            maxi = bus[i][1]
+        maxi = max(maxi,bus[i][1])
 
     G = [[] for _ in range(maxi+1)]
 
-    for x, y, cap in bus:
-        G[x].append((cap, y))
-        G[y].append((cap, x))
-    print(G)
+    for x, y, edge in bus:
+        G[x].append((edge, y))
+        G[y].append((edge, x))
 
     parent = MST_Prim(G,0) #szukam paraentow dla drzewa o maksymalnie duzej minimalnej krawędzi
 
     #odtwarzanie ściezki
     path = []
-    last = e
+    last = t
 
-    while parent[last] != None:
+    while last != None:
         path.append(last)
         last = parent[last]
 
-    path.append(s)
-    path = path[::-1] #moja sciezka od s do e
-
-    i = 0
-    bus.sort(key=lambda x : x[0]) #sortuje popoczatkach
-    group = float("inf")
-
-    #szukam najmniejszej pojemnosci na mojej trasie-wielkosc grupy
-    #przechodze po autobusach kiedy trafie na taki co jedzie na trasie w path to sprawdzam czy jego pojemnosc < obecnej poj
-    #jesli tak to aktulaizuje pojemnosc
-    for x, y, cap in bus:
-        if i == len(path) - 1:
-            break
-        if x == path[i] and y == path[i+1]:
-            if cap < group:
-                group = cap
-                i += 1
-
-    return path,group
-
-#(u,v,edge)
-bus = [(3,6,6),(5,6,6),(1,5,3),(2,3,5),(0,1,5),(0,2,4)]
-print(tourGuide(bus,0,6))
-
+    return path[::-1]
