@@ -1,11 +1,9 @@
 # Mamy dany graf G = (V, E) z wagami w∶ E → N−{0} (dodatnie liczby naturalne).
 # Chcemy znalezc scieżkę z wierzchołka u do v tak, by iloczyn wag był minimalny
 
-
 #Wykonujemy zwykły algorytm dijkstry, z różnicą, że będą brane wartości logarytmów krawedzi.
 #Dzięki temu minimalizujac sumę logarytmów, zminimalizujemy iloczyn krawędzi.
 #log(x) + log(y) = log(xy)
-
 
 from queue import PriorityQueue
 from math import log10
