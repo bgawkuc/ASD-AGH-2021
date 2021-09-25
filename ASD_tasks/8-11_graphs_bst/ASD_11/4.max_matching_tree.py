@@ -1,27 +1,14 @@
-#znajdź max skojarzenie w drzewie(graf nieskierowany,acykliczny)
+# Proszę podać algorytm, który mając na wejściu drzewo oblicza skojarzenie o maksymalnej liczności.
 
-#drzewo jest grafem dwudzielnym
-#więc mozna uzyc algorytmu do znajdowania max skojarzenia w grafie dwudzielnym
-#ale najpierw musze go przerobic na graf dwudzielny skierowany
-#w którym krawędzie prowadzą tylko z lewego zbioru(A) do prawego(B)
-#wywołuje BFS do kolorowania wierzchołków i dzieki temu mamy wierzcholki koloru 1 i 0
-#ustalam sobie ze bede prowadzic krawędzie skierowane z wierzchołków o kolorze "1" do wierzchołków koloru "0"
-#tworze graf o 2 większy niz rozmiar grafu wejściowego
-#te 2 dodatkowe wierzchołki to będzie super-źródło i super-ujście
-#i teraz moge zaczac przepisywać krawędzie do nowego grafu
-#jak miedzy u a v jest krawędź w wejsciowym
-#oraz u jest w grupie koloru 1 a v w grupie koloru 0
-#to dodaje krawędź z u do v oraz dodatkowo:
-#1) z super źródla do u
-#2) z v do super ujścia
-#kazda krawędź ma wagę 1
-#i na takim nowym grafie mogę wywołać juz algorytm do znajdowania max przepływu
-#max skojarzeniem będzie max flow od super zrodła do super ujścia
+#Drzewo jest grafem dwudzielnym. Za pomocą BFS znajduje dwie grupy wierzchołków (kolorów), który taki graf tworzą.
+#Tworzę nowy graf G1 z 2 dodatkowymi wierzchołkami - super źródłem i super ujściem.
+#W grafie G1 dodaje te same krawędzie co były w drzewie oraz gdy wierzhcołek należy do koloru 0 to dodaje krawędź 
+#z super źródła do niego. Jeśli należał on do koloru 1 to dodaje krawędź z niego do super ujścia.
+#Wartość maksymalnego przepływu z super źródła do super ujścia stanowi wartość skojarzenia o maksymalnej liczności. 
 
 from queue import Queue
 
-#BFS do maxflow
-def BFS(G,s,e,parent):
+def BFS(G,s,t,parent):
     n = len(G)
     visited = [False] * n
     visited[s] = True
@@ -38,7 +25,7 @@ def BFS(G,s,e,parent):
                 parent[v] = u
                 q.put(v)
 
-    return visited[e]
+    return visited[t]
 
 #BFS do okreslenia kolorowania wierzchołków
 def BFS2(G,s):
@@ -65,13 +52,13 @@ def BFS2(G,s):
     return color #zwraca tablice z pokolorowanymi wierzchołkami na dwa kolory 0 i 1
 
 
-def fordFulkerson(G,s,e):
+def fordFulkerson(G,s,t):
     n = len(G)
     parent = [None] * n
     maxFlow = 0
 
-    while BFS(G,s,e,parent):
-        u = e
+    while BFS(G,s,t,parent):
+        u = t
         mini = float("inf")
 
         while u != s:
@@ -81,7 +68,7 @@ def fordFulkerson(G,s,e):
 
         maxFlow += mini
 
-        u = e
+        u = t
         while u != s:
             G[parent[u]][u] -= mini
             G[u][parent[u]] += mini
@@ -95,7 +82,7 @@ def maxMatchingTree(G):
     G1 = [[0] * (n+2) for _ in range(n+2)] #nowy graf z 2 wierzchołkami wiecej
 
     s = n #super-źródło
-    e = n + 1 #super-ujście
+    t = n + 1 #super-ujście
 
     color = BFS2(G,0) #podział na wierzchołki z A i B, A-mają kolor 1,B-mają kolor 0
     print(color)
@@ -115,24 +102,4 @@ def maxMatchingTree(G):
     for i in range(n+2):
         print(G1[i])
 
-    return fordFulkerson(G1,s,e) #max skojarzenie to max flow z super źródła do super ujścia
-
-
-G = [[0] * 8 for _ in range(8)]
-G[0][1] = 1
-G[1][0] = 1
-G[1][2] = 1
-G[2][1] = 1
-G[2][4] = 1
-G[4][2] = 1
-G[2][3] = 1
-G[3][2] = 1
-G[4][5] = 1
-G[5][4] = 1
-G[5][6] = 1
-G[6][5] = 1
-G[5][7] = 1
-G[7][5] = 1
-
-
-print(maxMatchingTree(G))
+    return fordFulkerson(G1,s,t) #max skojarzenie to max flow z super źródła do super ujścia
