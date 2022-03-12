@@ -1,7 +1,8 @@
-#BFS dla grafu ważonego
-#Reprezentacja dla list sąsiedztwa
-#Zlożoność: O(maxi*(V+E)), maxi-rozmiar największej krawędi
+# BFS dla grafu ważonego
+# Reprezentacja dla list sąsiedztwa
+# Zlożoność: O(maxi*(V+E)), maxi-rozmiar największej krawędi
 from queue import Queue
+
 
 def BFS_false_vertex(G, u):
     n = len(G)
@@ -19,12 +20,10 @@ def BFS_false_vertex(G, u):
         if q.empty():
             q = Queue()
 
-        # gdy zostały sztuczne wierzchołki
         if cntFalse > 0:
             q.put((u, cntFalse - 1, parent, weight))
-        
+
         else:
-            # gdy nie był jeszcze odwiedzony
             if not visited[u]:
                 visited[u] = True
 
@@ -33,7 +32,6 @@ def BFS_false_vertex(G, u):
                 else:
                     dist[u] = weight + dist[parent]
 
-            # wrzucam do kolejki wszystkie jego dzieci które nie były odwiedzone
             for v, edge in G[u]:
                 if not visited[v]:
                     q.put((v, edge - 1, u, edge))

@@ -1,32 +1,30 @@
 # Proszę zaimplementować algorytm QuickSort bez użycia rekurencji 
 
-def partition(A,l,r):
+def partition(A, l, r):
     pivot = A[r]
     i = l
-    for j in range(l,r):
+    for j in range(l, r):
         if A[j] <= pivot:
-            A[i],A[j] = A[j],A[i]
+            A[i], A[j] = A[j], A[i]
             i += 1
-    A[i],A[r] = A[r],A[i]
+    A[i], A[r] = A[r], A[i]
     return i
 
+
 def quickSort(A):
-    S = [] 
+    S = []
     n = len(A)
-    l,r = 0,n-1
-    #dodaje na stos krotki z indeksem lewym i prawym
-    S.append((l,r))
-    
+    l, r = 0, n - 1
+    S.append((l, r))
+
     while len(S) > 0:
-        (l,r) = S.pop()
+        (l, r) = S.pop()
         if l < r:
-            q = partition(A,l,r)
-            
-            #na stos dodaje najpierw większy przedział, a potem mniejszy
-            if q - l < r - q: 
-                S.append((q+1,r)) 
-                S.append((l,q-1))
-        
+            q = partition(A, l, r)
+
+            if q - l < r - q:
+                S.append((q + 1, r))
+                S.append((l, q - 1))
             else:
-                S.append((l,q-1))
-                S.append((q+1,r))
+                S.append((l, q - 1))
+                S.append((q + 1, r))

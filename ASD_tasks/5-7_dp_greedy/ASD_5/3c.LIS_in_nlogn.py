@@ -16,21 +16,13 @@ def LIS(A):
     tail[0] = A[0] 
     length = 1 
     
-    #przechodze liniowo po A
-    for i in range(1,n): 
-        
-        #gdy znaleziony element jest mniejszy od najmniejszego to najmniejszy nim zastępuje
-        if A[i] < tail[0]: 
+    for i in range(1,n):
+        if A[i] < tail[0]:
             tail[0] = A[i]
-        
-        #gdy jest wiekszy od największego do daje go za największy i zwiekszam dlugość
-        elif A[i] > tail[length-1]: 
+        elif A[i] > tail[length-1]:
             tail[length] = A[i]
             length += 1
-        
-        #gdy jest pomiedzy to znajduje miejsce za pomocą binary search, w którym trzeba go wpisać
         else:
             tail[binSearch(tail, -1, length-1, A[i])] = A[i]
 
-
-    return length 
+    return length

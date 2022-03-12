@@ -5,26 +5,23 @@
 
 #dp[i][j] - czy na pokład dlugosci j wjadą auta od indeksu 0 do i z A
 
-#length - dlugosc pokladu
 def ferry(A, length):
     n = len(A)
-    
-    #pref[i] - suma dlugosci aut od indeksu 0 do i
+
+    # pref[i] - suma dlugosci aut od indeksu 0 do i
     pref = [0] * n
     pref[0] = A[0]
     for i in range(1, n):
         pref[i] = pref[i - 1] + A[i]
-        
+
     dp = [[False] * (length + 1) for _ in range(n)]
 
-    # gdy poklad ma dlugosc minimum A[0] to auto o indeksie 0 sie zmiesci
     for i in range(A[0], length + 1):
         dp[0][i] = True
 
     for idx in range(n - 1):
         for l in range(1, length + 1):
 
-            # gdy na poklad dlg l udało sie wjechac autom do indeksu idx włącznie
             if dp[idx][l]:
                 # na lewy pas próbuje wpuscic auto o indeksie idx
                 if l + A[idx + 1] <= length:
@@ -37,6 +34,6 @@ def ferry(A, length):
     idx = n - 1
     while dp[idx][length] is False:
         idx -= 1
-    
-    #zwraca indeks ostatniego auta jakie wjechało na prom
+
+    # zwraca indeks ostatniego auta jakie wjechało na prom
     return idx

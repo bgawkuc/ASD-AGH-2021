@@ -7,45 +7,41 @@
 # rozwiązującą problem kapitana.
 
 
-def BFS(G,val):
+def BFS(G, val):
     n = len(G)
     m = len(G[0])
     visited = [[False] * m for _ in range(n)]
     q = []
-    q.append((0,0)) 
+    q.append((0, 0))
     visited[0][0] = True
-    
-    #sprawdza czy pole o wspolrzednych (x,y) znajduje się w garfie
-    def isIn(x,y): 
-        return n > x >= 0 and m > y >= 0 
+
+    def isIn(x, y):
+        return n > x >= 0 and m > y >= 0
 
     while q:
-        x,y = q.pop() 
-        
-        #gdy znajde sie na ostatnim polu
-        if x == n - 1 and y == m - 1: 
+        x, y = q.pop()
+
+        if x == n - 1 and y == m - 1:
             return True
 
-        #dla 4 mozliwych pol sprawdzam czy spelniaja warunki zadania - jesli tak to trafiaja do kolejki
-        if isIn(x-1,y) and G[x-1][y] > val:
-            if not visited[x-1][y]:
-                visited[x-1][y] = True
-                q.append((x-1,y))
+        if isIn(x - 1, y) and G[x - 1][y] > val:
+            if not visited[x - 1][y]:
+                visited[x - 1][y] = True
+                q.append((x - 1, y))
 
-        if isIn(x+1,y) and G[x+1][y] > val:
-            if not visited[x+1][y]:
-                visited[x+1][y] = True
-                q.append((x+1,y))
+        if isIn(x + 1, y) and G[x + 1][y] > val:
+            if not visited[x + 1][y]:
+                visited[x + 1][y] = True
+                q.append((x + 1, y))
 
-        if isIn(x,y-1) and G[x][y-1] > val:
-            if not visited[x][y-1]:
-                visited[x][y-1] = True
-                q.append((x,y-1))
+        if isIn(x, y - 1) and G[x][y - 1] > val:
+            if not visited[x][y - 1]:
+                visited[x][y - 1] = True
+                q.append((x, y - 1))
 
-        if isIn(x,y+1) and G[x][y+1] > val:
-            if not visited[x][y+1]:
-                visited[x][y+1] = True
-                q.append((x,y+1))
-                
-    #gdy nie dotrze do celu
-    return False =
+        if isIn(x, y + 1) and G[x][y + 1] > val:
+            if not visited[x][y + 1]:
+                visited[x][y + 1] = True
+                q.append((x, y + 1))
+
+    return False

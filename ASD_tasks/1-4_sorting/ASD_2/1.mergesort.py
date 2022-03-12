@@ -7,9 +7,9 @@ class Node():
         self.next = None
         self.value = None
 
-#scala 2 posortowane listy w jedną
-def merge2lists(L1,L2):
-    L = Node1()
+
+def merge2lists(L1, L2):
+    L = Node()
     head = L
 
     while L1 and L2:
@@ -34,17 +34,14 @@ def merge2lists(L1,L2):
 
 
 def mergesort2(L):
-    #gdy mam listy 0 lub 1 elementowe
     if L is None or L.next is None:
         return L
 
-    #szkam srodka listy wobec którego będę ją dzielić
     curr = L
     mid = L
     while curr.next and curr.next.next:
-        curr,mid = curr.next.next, mid.next
-    
-    #tworzy nową listę R która zaczyna się po środkowym elemencie
+        curr, mid = curr.next.next, mid.next
+
     R = Node()
     R.next = mid.next
     R = R.next
@@ -53,4 +50,4 @@ def mergesort2(L):
     left = mergesort2(L)
     right = mergesort2(R)
 
-    return merge2lists(left,right)        
+    return merge2lists(left,right)

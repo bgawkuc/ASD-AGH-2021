@@ -2,10 +2,10 @@
 #O(n), który stwierdza, czy istnieje liczba x (tzw. lider A), która występuje w A
 #na ponad połowie pozycji
 
-#szuka potencjalnego indeksu lidera
+# szuka potencjalnego indeksu lidera
 def leader(A):
-    cnt = 0 #ilosc wystapien
-    idx = 0 #indeks lidera
+    cnt = 0  # ilosc wystapien
+    idx = 0  # indeks lidera
 
     for i in range(len(A)):
         if cnt == 0:
@@ -18,7 +18,7 @@ def leader(A):
 
     return idx
 
-#sprawdza czy zadana wartość występuje na powyżej połowie pozycji
+
 def more_than_half(A):
     idx = leader(A)
     cnt = 0

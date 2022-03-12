@@ -1,21 +1,21 @@
-#sortowanie przez scalanie
-#złożoność: O(nlogn)
+# sortowanie przez scalanie
+# złożoność: O(nlogn)
 
 def mergeSort(A):
     if len(A) > 1:
-        #indeks środka listy
-        mid = len(A) // 2 
+        # indeks środka listy
+        mid = len(A) // 2
 
-        #wywołanie rekurenycjne dla listy A podzielonej na pół
-        L = A[:mid] #(od 0-mid-1)
-        R = A[mid:] #(mid-końca)
+        # wywołanie rekurenycjne dla listy A podzielonej na pół
+        L = A[:mid]  # (od 0-mid-1)
+        R = A[mid:]  # (mid-końca)
 
         mergeSort(L)
         mergeSort(R)
 
         i = j = k = 0
 
-        #scalanie 2 list: L i R
+        # scalanie 2 list: L i R
         while i < len(L) and j < len(R):
             if L[i] < R[j]:
                 A[k] = L[i]
@@ -34,5 +34,5 @@ def mergeSort(A):
             A[k] = R[j]
             j += 1
             k += 1
-            
+
     return A

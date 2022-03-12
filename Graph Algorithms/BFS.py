@@ -4,6 +4,7 @@
 
 from queue import Queue
 
+
 def BFS(G, s):
     queue = Queue()
     visited = [False] * len(G)
@@ -13,7 +14,7 @@ def BFS(G, s):
 
     while not queue.empty():
         u = queue.get()
-        
+
         for v in G[u]:
             if not visited[v]:
                 visited[v] = True

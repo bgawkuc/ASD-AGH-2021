@@ -1,8 +1,9 @@
-#Algorytm, który sprawdza czy graf posiada cykl.
-#Implementacja dla reprezentacji macierzowej.
-#Złożoność: O(V^2)
+# Algorytm, który sprawdza czy graf posiada cykl.
+# Implementacja dla reprezentacji macierzowej.
+# Złożoność: O(V^2)
 
 from queue import Queue
+
 
 def BFS(G):
     n = len(G)
@@ -16,11 +17,11 @@ def BFS(G):
     while not queue.empty():
         u = queue.get()
         for v in range(n):
-            
-            #0-brak krawędzi
+
+            # 0-brak krawędzi
             if G[u][v] != 0:
-                
-                #gdy mam odwiedzony wierzchołek v i u nie jest rodzicem v tzn, że trafiłam na cykl
+
+                # gdy mam odwiedzony wierzchołek v i u nie jest rodzicem v tzn, że trafiłam na cykl
                 if visited[v]:
                     if u != parent[v]:
                         print("have cycle")

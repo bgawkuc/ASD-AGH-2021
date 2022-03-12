@@ -6,12 +6,11 @@
 
 def knapsack(P, W, H, maxWeight, maxHeight):
     n = len(P)
-  
+
     dp = [[[0 for _ in range(maxHeight + 1)]
            for _ in range(maxWeight + 1)]
           for _ in range(n)]
 
-    # gdy przedmiot o indeksie 0 się zmiesci
     for w in range(W[0], maxWeight + 1):
         for h in range(H[0], maxHeight + 1):
             dp[0][w][h] = P[0]
@@ -20,7 +19,6 @@ def knapsack(P, W, H, maxWeight, maxHeight):
         for w in range(maxWeight + 1):
             for h in range(maxHeight + 1):
 
-                # gdy i-ty przedmiot sie zmiesci
                 if W[i] >= w and H[i] >= h:
                     dp[i][w][h] = max(dp[i][w][h], dp[i - 1][w - W[i]][h - H[i]] + P[i])
                 else:

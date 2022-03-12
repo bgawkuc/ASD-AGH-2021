@@ -13,10 +13,8 @@ def lis(A):
     sortA = sorted(sortA)
 
     for i in range(n):
-        # 0 kolumna
         if A[i] == sortA[0]:
             dp[i][0] = 1
-        # 0 wiersz
         if A[0] == sortA[i]:
             dp[0][i] = 1
 
@@ -43,6 +41,3 @@ def lis(A):
     
     #zwraca lis
     return res[::-1]
-
-a = [1,9,7,2,0,4,8,6]
-print(LIS_uisng_LCS(a))

@@ -74,7 +74,6 @@ def add2minHeap(A, el):
 def mergeKlists(L):
     heap = []
 
-    # dodaje wszystkie listy do kopca
     for li in L:
         add2minHeap(heap, li)
 
@@ -82,19 +81,15 @@ def mergeKlists(L):
     head = res
 
     while heap:
-        # lista o najmniejszym el
         mini = heap[0]
         minNode = mini
 
-        # jak była 1-elementowa to ją usuwam
         if mini.next is None:
             deleteMin(heap)
-        # jak miała więcej el to przechodze na niej o 1 element dalej
         else:
             heap[0] = heap[0].next
             heapifyMin(heap, 0)
 
-        # najmniejszy element dodaje do wyniku
         minNode.next = None
         res.next = minNode
         res = res.next
@@ -112,4 +107,3 @@ T = [l1, l2, l3]
 
 L = mergeKlists(T)
 printList(L)
-

@@ -1,9 +1,9 @@
 # Wierzchołek v w grafie skierowanym nazywamy dobrym początkiem jeśli każdy inny wierzchołek można 
 # osiągnąć scieżką skierowaną wychodzącą z v. Proszę podać algorytm, który stwierdza czy dany graf zawiera dobry początek.
 
-#Wywołuje DFS dla grafu i zapisuje czas przetworzenia każdego wierzchołka.
-#szukam wierzchołka, dla którego czas przetworzenia wynosi tyle co rozmiar grafu - jest od potencjalnym dobrym początkiem.
-#Dla takiego wierzchołka wywołuje DFS i sprawdzam czy zostaną odwiedzone wszystkie wierzchołki.
+# Wywołuje DFS dla grafu i zapisuje czas przetworzenia każdego wierzchołka.
+# szukam wierzchołka, dla którego czas przetworzenia wynosi tyle co rozmiar grafu - jest od potencjalny dobry początek.
+# Dla takiego wierzchołka wywołuje DFS i sprawdzam czy zostaną odwiedzone wszystkie wierzchołki.
 
 def goodStart(G):
     n = len(G)
@@ -27,9 +27,6 @@ def goodStart(G):
             dfsVisit(u)
 
     for u in range(n):
-
-        # jesli znajde wierzcholek, ktorego czas przetworzenia wynosi tyle co rozmiar grafu
-        # to wywołuje dla niego dfs i sprawdzam czy zostanie odwiedzony każdy wierzchołek
         if finish[u] == n:
             visited = [False] * n
             dfsVisit(u)
@@ -37,7 +34,6 @@ def goodStart(G):
             for i in range(n):
                 if visited[i] == False:
                     return False
-            #zwracam dobry początek
             return True, u
 
     return False

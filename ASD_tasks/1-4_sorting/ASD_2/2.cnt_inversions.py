@@ -6,7 +6,6 @@ def func(A):
 
     def cntInversion(A):
         if len(A) > 1:
-            #licznik inwersji
             nonlocal cnt
             mid = len(A) // 2
 
@@ -17,12 +16,10 @@ def func(A):
             cntInversion(R)
 
             l = r = a = 0
-            
+
             while l < len(L) and r < len(R):
-                #gdy po lewej el jest wiekszy od tego po prawej
-                #to zwiekszam ilosc inwersji
                 if L[l] > R[r]:
-                    cnt += len(L)-l
+                    cnt += len(L) - l
                     A[a] = R[r]
                     r += 1
                 else:
@@ -36,7 +33,7 @@ def func(A):
                 a += 1
 
             while r < len(R):
-                cnt += len(L)-l
+                cnt += len(L) - l
                 A[a] = R[r]
                 r += 1
                 a += 1

@@ -14,17 +14,17 @@ def frog(A):
     n = len(A)
     inf = float("inf")
     dp = [[inf] * n for _ in range(n)]
-    dp[0][A[0]] = 0 
-    
-    #start,end-indeks na jakim zaczynam i kończe skok
-    #startEnergy,endEnergy-ilość energii na polu start i end(po zjedzeniu przekąski z tego pola)
-    for end in range(1,n): 
-        for start in range(end): 
-            for startEnergy in range(end-start,n): 
-                endEnergy = startEnergy - (end-start) + A[end]
-                
+    dp[0][A[0]] = 0
+
+    # start,end-indeks na jakim zaczynam i kończe skok
+    # startEnergy,endEnergy-ilość energii na polu start i end(po zjedzeniu przekąski z tego pola)
+    for end in range(1, n):
+        for start in range(end):
+            for startEnergy in range(end - start, n):
+                endEnergy = startEnergy - (end - start) + A[end]
+
                 if endEnergy >= n:
-                    endEnergy = n-1
+                    endEnergy = n - 1
 
                 dp[end][endEnergy] = min(dp[end][endEnergy], dp[start][startEnergy] + 1)
 

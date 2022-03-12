@@ -13,7 +13,6 @@ def partition(A, l, r, k):
     return i
 
 
-# k-indeks po jakim sortuje
 def quicksort(A, l, r, k):
     if l < r:
         q = partition(A, l, r, k)
@@ -24,11 +23,9 @@ def quicksort(A, l, r, k):
 
 def func(A):
     n = len(A)
-    # dodaje informacje o indeksie w A
     for i in range(n):
         A[i].append(i)
 
-    # startX/endY-listy z przedzialami posortowana po poczatkach/po koncach
     startX = quicksort(A[:], 0, n - 1, 0)
     endY = quicksort(A[:], 0, n - 1, 1)
 
@@ -37,14 +34,9 @@ def func(A):
 
     # wypelniam tablice x,y
     for i in range(n):
-        #który z kolei (w posortowanej po początkach tablicy)
-        #jest przedział który w wejsciowej tablicy miał indeks startX[i][2]
         x[startX[i][2]] = i
-        # który z kolei (w posortowanej po końcach tablicy)
-        # jest przedział który w wejsciowej tablicy miał indeks endY[i][2]
         y[endY[i][2]] = i
 
-    # diff-ilosc przedzialow jakie sie zawiera w i-tym indeksie
     diff = [0] * n
 
     maxi = -float("inf")

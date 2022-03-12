@@ -1,8 +1,8 @@
-#DFS-Depth-first search, preszukiwanie w głąb
-#Implementacja dla list sąsiedztwa
-#Złożoność: O(V+E)
+# DFS-Depth-first search, preszukiwanie w głąb
+# Implementacja dla list sąsiedztwa
+# Złożoność: O(V+E)
 
-def DFS(G,s):
+def DFS(G, s):
     visited = [False] * len(G)
 
     def DFS_visit(u):

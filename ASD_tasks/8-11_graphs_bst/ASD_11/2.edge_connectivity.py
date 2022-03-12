@@ -2,12 +2,14 @@
 # pewnych k krawędzi powoduje, że G jest niespójny, ale usunięcie dowolnych k − 1 krawędzi nie rozspójnia go. 
 # Proszę podać algorytm, który oblicza spójność krawędziową danego grafu.
 
-#Aby obliczyć spójność krawędziową w grafie G należy policzyć wartość maksymalnego przepływu 
-#od wierzchołka np. 0 do każdego innego (różnego od 0). Wśród tych wartości szukam najmniejszej, która
-#stanowi spójność krawędziową grafu.
+# Aby obliczyć spójność krawędziową w grafie G należy policzyć wartość maksymalnego przepływu
+# od wierzchołka np. 0 do każdego innego (różnego od 0). Wśród tych wartości szukam najmniejszej, która
+# stanowi spójność krawędziową grafu.
 
 from queue import Queue
-def BFS(G,s,t,parent):
+
+
+def BFS(G, s, t, parent):
     n = len(G)
     visited = [False] * n
     visited[s] = True
@@ -25,13 +27,14 @@ def BFS(G,s,t,parent):
 
     return visited[t]
 
-#szuka max przepływu w grafie skierowanym
-def fordFulkerson(G,s,t):
+
+# szuka max przepływu w grafie skierowanym
+def fordFulkerson(G, s, t):
     n = len(G)
     parent = [None] * n
     maxFlow = 0
 
-    while BFS(G,s,t,parent):
+    while BFS(G, s, t, parent):
         u = t
         mini = float("inf")
 
@@ -49,8 +52,9 @@ def fordFulkerson(G,s,t):
             u = parent[u]
     return maxFlow
 
-#szuka max przepływu w grafie nieskierowanym
-def maxFlowUndirected(G,s,t):
+
+# szuka max przepływu w grafie nieskierowanym
+def maxFlowUndirected(G, s, t):
     n = len(G)
     cntEdges = 0
 
@@ -58,11 +62,10 @@ def maxFlowUndirected(G,s,t):
         for v in range(n):
             if u < v and G[u][v] != 0:
                 cntEdges += 1
-    
-    #rozmiar nowego grafu
-    m = n + cntEdges 
+
+    m = n + cntEdges
     G1 = [[0] * m for _ in range(m)]
-    newVertex = n 
+    newVertex = n
 
     for u in range(n):
         for v in range(n):
@@ -70,27 +73,27 @@ def maxFlowUndirected(G,s,t):
                 G1[u][v] = G[u][v]
                 G1[v][newVertex] = G1[newVertex][u] = G[u][v]
                 newVertex += 1
-                
-    return fordFulkerson(G1,s,t)
 
-#oblicza spójność krawędziową grafu G(reprezentacja macierzowa)
+    return fordFulkerson(G1, s, t)
+
+
 def edgeConnectivity(G):
     n = len(G)
     s = 0
     k = float("inf")
 
-    #puszczam szukanie max przepływu z wierzchołka 0 do kazdego innego
-    for t in range(1,n):
-        print(t,maxFlowUndirected(G,s,t))
-        k = min(k,maxFlowUndirected(G,s,t))
+    for t in range(1, n):
+        print(t, maxFlowUndirected(G, s, t))
+        k = min(k, maxFlowUndirected(G, s, t))
 
     return k
 
+
 G = [
-        [0,1,0,1,1],
-        [1,0,1,0,0],
-        [0,1,0,1,0],
-        [1,0,1,0,1],
-        [1,0,0,1,0],
+    [0, 1, 0, 1, 1],
+    [1, 0, 1, 0, 0],
+    [0, 1, 0, 1, 0],
+    [1, 0, 1, 0, 1],
+    [1, 0, 0, 1, 0],
 ]
 print(edgeConnectivity(G))

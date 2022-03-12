@@ -1,7 +1,7 @@
-#Sortowanie topologiczne dla grafu skierowanego.
-#Ustala kolejność wierzchołków w ten sposób, by każdy wierzchołek znajdował się przed wierzchołkami, 
-#do których prowadzą krawędzie z niego wychodzące.
-#Implementacja dla reprezentacji przez listy sąsiedztwa.
+# Sortowanie topologiczne dla grafu skierowanego.
+# Ustala kolejność wierzchołków w ten sposób, by każdy wierzchołek znajdował się przed wierzchołkami,
+# do których prowadzą krawędzie z niego wychodzące.
+# Implementacja dla reprezentacji przez listy sąsiedztwa.
 
 def DFS(G):
     order = []

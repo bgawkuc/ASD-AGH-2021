@@ -1,13 +1,14 @@
 # Proszę wskazać algorytm, który znajduje maksymalny przepływ między źródłem i ujściem w grafie nieskierowanym.
 
-#Graf wejściowy G (rozmiaru n) należy przerobić na graf skierowany, dla którego należy użyć algorytmu Forda-Fulkersona na największy przepływ.
-#Liczę ilość krawędzi w grafie G i tworzę nowy graf G1 rozmiaru n+ilość krawędzi.
-#Dla każdej grawędzi z u do v w G tworzę krawędź skierowaną z u do v i v do nowego wierzcholka i z nowego wierzchołka do u w G1.
-#Dla grafu G1 liczę maksymalny przepływ.
+# Graf wejściowy G (rozmiaru n) należy przerobić na graf skierowany, dla którego należy użyć algorytmu Forda-Fulkersona na największy przepływ.
+# Liczę ilość krawędzi w grafie G i tworzę nowy graf G1 rozmiaru n+ilość krawędzi.
+# Dla każdej grawędzi z u do v w G tworzę krawędź skierowaną z u do v i v do nowego wierzcholka i z nowego wierzchołka do u w G1.
+# Dla grafu G1 liczę maksymalny przepływ.
 
 from queue import Queue
 
-def BFS(G,s,t,parent):
+
+def BFS(G, s, t, parent):
     n = len(G)
     visited = [False] * n
     visited[s] = True
@@ -27,12 +28,12 @@ def BFS(G,s,t,parent):
     return visited[t]
 
 
-def fordFulkerson(G,s,t):
+def fordFulkerson(G, s, t):
     n = len(G)
     parent = [None] * n
     maxFlow = 0
 
-    while BFS(G,s,t,parent):
+    while BFS(G, s, t, parent):
         u = t
         mini = float("inf")
 
@@ -51,30 +52,25 @@ def fordFulkerson(G,s,t):
     return maxFlow
 
 
-def maxFlowUndirected(G,s,t):
+def maxFlowUndirected(G, s, t):
     cntEdges = 0
     n = len(G)
 
-    #zliczam ilosc krawedzi w G
+    # zliczam ilosc krawedzi w G
     for i in range(n):
         for j in range(n):
-            if i < j and G[i][j] != 0: 
+            if i < j and G[i][j] != 0:
                 cntEdges += 1
-    
-    #rozmiar nowego grafu to rozmiar starego + liczba krawędzi
-    m = n + cntEdges 
 
+    m = n + cntEdges
     G1 = [[0] * m for _ in range(m)]
-    
-    #indeks nowego wierzchołka
-    newVertex = n 
+    newVertex = n
 
-    #przechodze po starym grafie
     for u in range(n):
         for v in range(n):
             if u < v and G[u][v] != 0:
-                G1[u][v] = G[u][v] #krawedz u -> v
-                G1[v][newVertex] = G1[newVertex][u] = G[u][v] #krawędzie v -> newVertex, newVertex -> u
+                G1[u][v] = G[u][v]
+                G1[v][newVertex] = G1[newVertex][u] = G[u][v]
                 newVertex += 1
 
-    return fordFulkerson(G1,s,t)
+    return fordFulkerson(G1, s, t)

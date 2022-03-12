@@ -6,37 +6,32 @@
 # tablicę A z wartościami energetycznymi przekąsek na każdej z liczb.
 
 from queue import PriorityQueue
+
+
 def zbigniew(A):
     n = len(A)
-    #far - zasięg skoku żaby
+    # far - zasięg skoku żaby
     far = A[0]
     # ilosc skoków
     cnt = 1
 
-    #gdy z pola o indeksie 0 doskoczę do końca to wystarczy tylko 1 skok
-    if far >= n-1:
+    if far >= n - 1:
         return cnt
 
     q = PriorityQueue()
-    #do pq  dodaje wszystkie pola w zasięgu żaby
-    #dodaje z minusem by wyciągac po polach o największej iloći energii
     idx = 1
     while idx < n and idx <= far:
-        q.put((-A[idx],idx))
+        q.put((-A[idx], idx))
         idx += 1
 
-    #dopoki zasieg zaby jest mniejszy od indeksu ostatniego pola
-    while far < n-1:
-        #wyjmuje pole z kolejki o max energii, zwiekszam zasięg
-        energy,i = q.get()
+    while far < n - 1:
+        energy, i = q.get()
         far += abs(energy)
 
-        #zwiekszam ilosc skokow
         cnt += 1
 
-        # dodaje do pq wszyskie pola w nowym zasięgu
         while idx < n and idx <= far:
-            q.put((-A[idx],idx))
+            q.put((-A[idx], idx))
             idx += 1
 
     return cnt

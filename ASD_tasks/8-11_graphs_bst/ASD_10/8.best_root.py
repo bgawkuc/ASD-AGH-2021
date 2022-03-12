@@ -1,8 +1,8 @@
 # Dany jest acykliczny, spójny nieskierowany, ważony graf T (czyli T jest tak naprawdę ważonym drzewem).
 # Proszę wskazać algorytm, który znajduje taki wierzchołek T, z którego odległość do najdalszego wierzchołka jest minimalna.
 
-#Szukam średnicy drzewa (największej ścieżki - pod względem sumy wag) za pomocą 2-krotnego wywołania DFS.
-#W średnicy szukam wierzchołka, który podzieli ją na 2 częsci o minimalnej różnicy.
+# Szukam średnicy drzewa (największej ścieżki - pod względem sumy wag) za pomocą 2-krotnego wywołania DFS.
+# W średnicy szukam wierzchołka, który podzieli ją na 2 częsci o minimalnej różnicy.
 
 def dfs(G, s):
     n = len(G)
@@ -34,7 +34,6 @@ def bestRoot(G):
         if d1[i] > d1[u]:
             u = i
 
-    # dla u odpalam dfs
     d2, parent = dfs(G, u)
     print(d2)
 
@@ -44,8 +43,6 @@ def bestRoot(G):
         if d2[i] > d2[v]:
             v = i
 
-    # sciezka od u do v to srednica dlugosci length
-    # odtwarzam ją
     length = d2[v]
     path = []
     curr = v
@@ -54,7 +51,6 @@ def bestRoot(G):
         curr = parent[curr]
     path = path[::-1]
 
-    # najlepszy wierzchloek i min roznica
     root = u
     diff = length
 

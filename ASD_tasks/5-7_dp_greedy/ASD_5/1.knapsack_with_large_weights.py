@@ -21,13 +21,11 @@ def knapsack2(P, W, maxWeight):
     for idx in range(1, n):
         for profit in range(sumProf + 1):
 
-            # gdy profit przedmiotu przekracza obecny profit
             if P[idx] > profit:
                 dp[idx][profit] = min(dp[idx - 1][profit], W[idx])
             else:
                 dp[idx][profit] = min(dp[idx - 1][profit], dp[idx - 1][profit - P[idx]] + W[idx])
 
-    #szukam jaki max profit mogę uzyskac biorąc pod uwagę wszystkie przedmioty i ograniczenie wagi
     right = dp[n - 1][sumProf]
     left = dp[n - 1][sumProf - 1]
     last = None
@@ -44,7 +42,6 @@ def knapsack2(P, W, maxWeight):
                 last = i + 1
                 break
                 
-    #odtwarza indeksy wybranych przedmiotów
     def solution(i, profit):
         if i < 0:
             return []

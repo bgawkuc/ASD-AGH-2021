@@ -7,6 +7,7 @@
 
 from queue import Queue
 
+
 def BFS(G):
     q = Queue()
     visited = [False] * len(G)
@@ -14,7 +15,7 @@ def BFS(G):
 
     q.put(0)
     visited[0] = True
-    color[0] = 1 
+    color[0] = 1
 
     while not q.empty():
         u = q.get()
@@ -23,11 +24,10 @@ def BFS(G):
 
             if not visited[v]:
                 visited[v] = True
-                #koloruje na inny kolor niż ma u
-                color[v] = 1 - color[u] 
+                # koloruje na inny kolor niż ma u
+                color[v] = 1 - color[u]
                 q.put(v)
-            
-            #gdy kolor wierzchołki na jednej krawędzi jest taki sam
+
             if color[u] == color[v]:
                 return False
 

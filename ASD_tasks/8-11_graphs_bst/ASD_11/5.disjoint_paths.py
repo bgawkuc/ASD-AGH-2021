@@ -1,13 +1,14 @@
 # Dany jest graf skierowany G = (V, E) oraz wierzchołki s i t. Proszę zaproponować algorytm 
 # znajdujący maksymalną liczbę rozłącznych (wierzchołkowo) ścieżek między s i t.
 
-#Graf wejściowy G jest rozmiaru n. Tworzę nowy graf G1 rozmiaru 2*n.
-#Gdy w grafie G mam krawędź z u do v, to w G1 dodaje krawędź: z u do u+n, z u+n do v, z v do v+n.
-#Dla grafu G1 szukam wartości maksymalnego przepływu, która wynosi tyle samo ilość rozłącznych ścieżek.
+# Graf wejściowy G jest rozmiaru n. Tworzę nowy graf G1 rozmiaru 2*n.
+# Gdy w grafie G mam krawędź z u do v, to w G1 dodaje krawędź: z u do u+n, z u+n do v, z v do v+n.
+# Dla grafu G1 szukam wartości maksymalnego przepływu, która wynosi tyle samo ilość rozłącznych ścieżek.
 
 from queue import Queue
 
-def BFS(G,s,t,parent):
+
+def BFS(G, s, t, parent):
     n = len(G)
     visited = [False] * n
     visited[s] = True
@@ -27,12 +28,12 @@ def BFS(G,s,t,parent):
     return visited[t]
 
 
-def fordFulkerson(G,s,t):
+def fordFulkerson(G, s, t):
     n = len(G)
     parent = [None] * n
     maxFlow = 0
 
-    while BFS(G,s,t,parent):
+    while BFS(G, s, t, parent):
         u = t
         mini = float("inf")
 
@@ -51,22 +52,22 @@ def fordFulkerson(G,s,t):
 
     return maxFlow
 
-#oblcza ilość rozłącznych ścieżek z s do t
-def disjointPaths(G,s,t):
-    n = len(G)
-    newG = [[0] * (2*n) for _ in range(2*n)]
 
-    #krawedź taka co w oryginalnym miedzy 2 wierzcholkami
+def disjointPaths(G, s, t):
+    n = len(G)
+    newG = [[0] * (2 * n) for _ in range(2 * n)]
+
+    # krawedź taka co w oryginalnym miedzy 2 wierzcholkami
     for i in range(n):
         for j in range(n):
             if G[i][j]:
-                newG[i+n][j] = 1
+                newG[i + n][j] = 1
 
-    #krawedzie miedzy tym samym wierzcholkiem tylko ze rozdwojonym
+    # krawedzie miedzy tym samym wierzcholkiem tylko ze rozdwojonym
     for i in range(n):
         if i == s or i == t:
-            newG[i][i+n] = float('inf')
+            newG[i][i + n] = float('inf')
         else:
-            newG[i][i+n] = 1
+            newG[i][i + n] = 1
 
-    return fordFulkerson(newG,s,t+n)
+    return fordFulkerson(newG, s, t + n)
