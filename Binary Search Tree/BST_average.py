@@ -1,10 +1,10 @@
-#Znajdź wartość średnią (średnia arytmetyczna) wśród wszystkich kluczy w drzewie.
+# Znajdź wartość średnią (średnia arytmetyczna) wśród wszystkich kluczy w drzewie.
 
-#Przechodzę po drzewie w kolejności inorder.
-#Sumuje wszystkie klucze i liczę ilość.
+# Przechodzę po drzewie w kolejności inorder.
+# Sumuje wszystkie klucze i liczę ilość.
 
 class BST_Node:
-    def __init__(self,key):
+    def __init__(self, key):
         self.key = key
         self.parent = None
         self.left = None
@@ -12,11 +12,11 @@ class BST_Node:
 
 
 def average(root):
-    sum_ = 0 #suma kluczy
-    cnt = 0 #ilosc węzłów
+    sum_ = 0  # suma kluczy
+    cnt = 0  # ilosc węzłów
 
     def inorder(root):
-        nonlocal sum_,cnt
+        nonlocal sum_, cnt
         if root is not None:
             inorder(root.left)
             sum_ += root.key
@@ -24,4 +24,4 @@ def average(root):
             inorder(root.right)
 
     inorder(root)
-    return sum_/cnt
+    return sum_ / cnt
